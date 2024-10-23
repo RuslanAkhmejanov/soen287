@@ -1,182 +1,214 @@
-/* General resets */
-
+/* General Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* CSS Variables */
+:root {
+    --primary-color: #e67e22;
+    --secondary-color: #2c3e50;
+    --background-color: #f4f4f4;
+    --light-background: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* General Body Styling */
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #E5E3DE;
-}
-section{
-    margin-top: 70px;
-    padding: 80px 20px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    background-color: var(--background-color);
+    color: var(--secondary-color);
+    margin: 0;
+    padding: 0;
 }
 
+/* Navbar Styling */
 .custom-navbar {
-    position: fixed;
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    top: 0;
-    background-color: #E5E3DE;
-    width: 100%;
-    
+    background-color: #b0c4de;
+    padding: 15px 30px;
+    box-shadow: 0 2px 5px var(--shadow-color);
 }
-
-
 
 .salon-name {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.navbar-nav .nav-link {
+    color: var(--secondary-color);
+    font-weight: 500;
     margin-right: 20px;
+    transition: color 0.3s ease;
 }
 
-
-
-nav ul li a:hover {
-    color: rgb(114, 93, 167);
+.navbar-nav .nav-link:hover {
+    color: var(--primary-color);
 }
 
-.auth-buttons .button {
-    background-color: rgb(114, 93, 167);
-    color: #E5E3DE;
-    padding: 8px 15px;
-    text-decoration: none;
-    border-radius: 5px;
+.auth-buttons .btn {
     margin-left: 10px;
-    
+    padding: 8px 15px;
+    transition: background-color 0.3s ease;
 }
 
-.auth-buttons .button:hover {
-    background-color:  #545A67;
+/* Hero Section */
+.hero-section {
+    background-color: #f9f9f9;
+    padding: 60px 0;
 }
 
-
-
-/* Hero section */
-#home {
-    background-image: url('images/4c159c6b-d6f5-4873-b1ab-37b1100b2211.jpeg');
-    background-size: cover;
-    background-position: center;
-    height: 700px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #E5E3DE;
+/* Sidebar Styling */
+.sidebar {
+    background-color: var(--light-background);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px var(--shadow-color);
 }
 
-#home h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
+.sidebar h1 {
+    font-size: 26px;
+    color: var(--secondary-color);
 }
 
-.btn {
-    background-color: rgb(114, 93, 167);
-    color: #E5E3DE;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 18px;
+.sidebar .btn {
+    background-color: var(--primary-color);
+    color: white;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
 }
 
-.btn:hover {
-    background-color: #545A67;
+/* Open Hours Section */
+.open-hours {
+    background-color: var(--light-background);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-
-
-/* Info Section */
-#open-hours{
-    text-align: center;
+.open-hours h3 {
+    font-size: 22px;
+    color: var(--secondary-color);
 }
-#title {
-    text-align: left;
-    
+
+.open-hours ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.open-hours li {
+    font-size: 16px;
+    margin-bottom: 10px;
 }
 
 /* Services Section */
-#services {
+#services .service-item {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    margin-bottom: 30px;
     padding: 20px;
 }
 
-#services h2 {
-    text-align: left;
-    margin-bottom: 20px;
-
+#services img {
+    width: 100%; 
+    max-width: 45%; 
+    height: auto; 
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-right: 20px;
 }
 
-#services img {
-    width: 45%;
-    height: auto;
-    padding: 10px;
-    float:right;
-    border-radius: 5%;
+#services .description {
+    flex: 1; 
+    padding-left: 20px;
+}
+
+#services h4 {
+    font-size: 24px;
+    color: #34495e;
 }
 
 #services p {
-    text-align: justify;
-    padding-right: 20px;
-}
-#services h5{
-    font-weight: bold;;
+    font-size: 16px;
+    color: #2c3e50;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+    #services .service-item {
+        flex-direction: column; 
+    }
 
+    #services img {
+        max-width: 100%; 
+        margin-right: 0; 
+        margin-bottom: 20px; 
+    }
+
+    #services .description {
+        width: 100%; 
+        padding-left: 0;
+    }
+}
 
 
 
 
 /* Staff Section */
-#staff {
-    padding: 20px;
+#staff .staff-member {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
 }
 
-#staff h6 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-#staff p {
-    text-align: justify;
-    padding-top: 10px;
-    padding-right: 20px;
-    column-width: 400px;
-
-}
 #staff img {
-    width: 400px;
-    height: 500px;
+    width: 300px;
+    height: 300px;
     object-fit: cover;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px var(--shadow-color);
 }
 
-.staff-member {
-    text-align: center;
+#staff h2 {
+    font-size: 28px;
+    color: var(--secondary-color);
     margin-bottom: 20px;
 }
 
-
-
-
-#contact {
-    padding: 20px; 
+/* Contact Form */
+.contact-section {
+    background-color: var(--light-background);
+    padding: 60px 0;
 }
 
-#contact form {
-    max-width: 600px; 
-    width: 100%; 
-    padding: 20px; 
-    border-radius: 8px;
+.contact-section h2 {
+    font-size: 28px;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
 }
 
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    transition: border-color 0.3s ease;
+}
 
+.form-control:focus {
+    border-color: var(--secondary-color);
+}
 
+.btn-primary {
+    background-color: var(--secondary-color);
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    transition: background-color 0.3s ease;
+}
 
+.btn-primary:hover {
+    background-color: #1a2939;
+}
