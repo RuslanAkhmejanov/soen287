@@ -2,79 +2,93 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Hair Salon</title>
+        <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <link rel = "stylesheet" href = "design.css">
-    
+        <link rel="stylesheet" href="design.css">
     </head>
 
     <body>
+        <!-- Header with Navbar -->
         <header>
-            <!-- Navbar with responsive hamburger menu -->
-            <nav class="navbar navbar-expand-lg navbar-light custom-navbar" id="navbar">
-                <h3 class="salon-name">Hair Salon</h3>
-                <!-- Hamburger Button -->
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <!-- Collapsible Navbar -->
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item active"><a class="nav-link" aria-current="page" href="#account-info">Account Info</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#bills">Bills</a></li>
-                    </ul>
-                    <div class="ml-auto">
-                        <a href="home.html" class="btn">Back</a>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container">
+                    <h3 class="salon-name">Hair Salon</h3>
+                    <!-- Hamburger Button -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Collapsible Navbar -->
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item active"><a class="nav-link" href="#account-info">Account Info</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#bills">Bills</a></li>
+                        </ul>
+                        <a href="home.html" class="btn btn-secondary ml-lg-3">Back</a>
                     </div>
                 </div>
             </nav>
         </header>
-    
-       
+
         <!-- User Information Section -->
-        <section id="account-info">
-            <h2>Account Information</h2>
-            <form id="edit-account-form">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="address">Address:</label>
-                <input type="text" id="address" name="address" required>
-
-                <label for="phone">Phone:</label>
-                <input type="tel" id="phone" name="phone" required>
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-
-                <button type="submit">Update Account</button>
-                <button type="button" id="delete-account">Delete Account</button>
-            </form>
+        <section id="account-info" class="mt-5">
+            <div class="container">
+                <h2>Account Information</h2>
+                <form id="edit-account-form">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input type="text" class="form-control" id="address" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone:</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Account</button>
+                    <button type="button" id="delete-account" class="btn btn-danger">Delete Account</button>
+                </form>
+            </div>
         </section>
 
-
-        <!-- Overview of Services -->
-        <section id="services">
-            <h2>Service Overview</h2>
+        <!-- Services Section -->
+        <section id="services" class="mt-5">
+            <div class="container">
+                <h2>Service Overview</h2>
+                <p>Here you can view the various services offered by the salon. More details to come!</p>
+                <!-- Add detailed service information later -->
+            </div>
         </section>
 
         <!-- Cancel Service Section -->
-        <section id="cancel-service">
-            <h2>Cancel a Service</h2> 
+        <section id="cancel-service" class="mt-5">
+            <div class="container">
+                <h2>Cancel a Service</h2>
+                <p>If you'd like to cancel a service, please contact us or click below to proceed with the cancellation process.</p>
+                <button class="btn btn-warning">Cancel a Service</button>
+            </div>
         </section>
 
-      
-      <!-- Bills and Receipts Section -->
-        <section id="bills">
-            <h2>Bills & Receipts</h2>
+        <!-- Bills and Receipts Section -->
+        <section id="bills" class="mt-5 mb-5">
+            <div class="container">
+                <h2>Bills & Receipts</h2>
+                <p>Here you can view and manage your bills and receipts for the services you've received.</p>
+                <!-- Billing details and functionality to be added -->
+            </div>
         </section>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
-
-
-
 </html>
