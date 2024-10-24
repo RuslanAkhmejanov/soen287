@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Settings</title>
 
     <!-- Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 
     <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
-
 </head>
+
 <body>
     <div class="grid-container">
         <!-- Header -->
@@ -61,37 +60,41 @@
             </ul>
         </aside>
 
-        <!-- Main -->
+        <!-- Main Content -->
         <main class="main-container">
             <div class="main-title">
-                <p class="font-weight-bold">DASHBOARD</p>
+                <p class="font-weight-bold">Settings</p>
             </div>
 
-            <!--Cards-->
-            <div class="main-cards">
-                <div class="card">
-                    <div class="card-inner">
-                        <p class="text-primary">PRODUCTS</p>
-                        <span class="material-icons-outlined text-blue">inventory</span>
-                    </div>
-                    <span class="text-primary font-weight-bold">15</span>
-                </div>
+            <!-- Salon Info Form -->
+            <div class="salon-info">
+                <h2>Edit Salon Information</h2>
+                <form id="salon-info-form">
+                    <label for="salon-name">Salon Name:</label>
+                    <input type="text" id="salon-name" value="Hair Salon Name Here">
+                    <br>
+                    <label for="salon-logo">Logo URL:</label>
+                    <input type="text" id="salon-logo" value="logo-url-here">
+                    <br>
+                    <label for="salon-address">Address:</label>
+                    <input type="text" id="salon-address" value="1234 Salon St, City, Country">
+                    <br>
+                    <label for="salon-phone">Phone Number:</label>
+                    <input type="text" id="salon-phone" value="123-456-7890">
+                    <br>
+                    <button type="button" onclick="saveSalonInfo()">Save Changes</button>
+                </form>
+            </div>
 
-                <div class="card">
-                    <div class="card-inner">
-                        <p class="text-primary">APPOINTMENTS</p>
-                        <span class="material-icons-outlined text-red">auto_stories</span>
-                    </div>
-                    <span class="text-primary font-weight-bold">24</span>
-                </div>
+            <!-- Salon Services Management -->
+            <div class="salon-services">
+                <h2>Manage Salon Services</h2>
+                <ul id="services-list">
+                    <!-- Dynamically populated -->
+                </ul>
 
-                <div class="card">
-                    <div class="card-inner">
-                        <p class="text-primary">REPORTING</p>
-                        <span class="material-icons-outlined text-yellow">article</span>
-                    </div>
-                    <span class="text-primary font-weight-bold">5</span>
-                </div>
+                <input type="text" id="new-service" placeholder="New service name">
+                <button type="button" onclick="addService()">Add Service</button>
             </div>
         </main>
     </div>
