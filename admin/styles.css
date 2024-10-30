@@ -228,3 +228,179 @@ font-weight: 500;
       display: none;
     }
   }
+
+/* Salon Info Form Container */
+.salon-info-container {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Heading */
+.salon-info-container h2 {
+  font-size: 24px; 
+  font-weight: 700; 
+  color: #333; 
+  margin-bottom: 20px;
+}
+
+/* Form Styling */
+#salon-info-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Labels */
+#salon-info-form label {
+  text-align: left;
+  font-weight: 500;
+  margin-top: 10px;
+  color: #666;
+}
+
+/* Input Fields */
+#salon-info-form input[type="text"],
+#salon-info-form input[type="url"],
+#salon-info-form input[type="tel"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Submit Button */
+#salon-info-form button {
+  margin-top: 20px;
+  padding: 12px 0;
+  background-color: #246dec;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#salon-info-form button:hover {
+  background-color: #1a53b0;
+}
+
+
+
+/* Adding/removing salon services form */
+.salon-services-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Form styling */
+#service-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#service-form input[type="text"] {
+  width: 70%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+#service-form button {
+  padding: 10px 20px;
+  background-color: #246dec;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#service-form button:hover {
+  background-color: #1a53b0;
+}
+
+/* Services list styling */
+#services-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+#services-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+/* Delete button for each service */
+.delete-button {
+  margin-left: 10px;
+  background-color: #ff4d4d;
+  color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.delete-button:hover {
+  background-color: #ff3333;
+}
+
+/* Modal styling */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Black background with transparency */
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: red;
+}
+
