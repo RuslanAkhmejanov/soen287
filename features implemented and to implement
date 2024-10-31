@@ -1,0 +1,67 @@
+Admin side:
+
+So far:
+
+1. Dashboard Overview (index.html)
+  Dashboard Cards: Displays key metrics such as "Products," "Appointments," and "Reporting" on cards for a quick overview.
+  Sidebar Navigation: Links to "Dashboard," "Products," "Reporting," and "Settings" pages, allowing navigation within the application.
+  Responsive Sidebar: Toggles between hidden and displayed modes based on screen size or menu button clicks.
+2. Salon Settings and Information Management (settings.html)
+  Salon Information Form: Allows input of salon name, logo, address, and telephone. This form is styled to be visually appealing and user-friendly.
+  Salon Information Modal: Displays a preview of the salon information entered in the form, including the uploaded logo image.
+  Add and Delete Services: Users can dynamically add new services to a list and delete existing ones, giving flexibility in service management.
+  Modal Popup Handling: Includes a modal for confirming salon information input and a close button for dismissing the modal.
+3. JavaScript Functionality (scripts.js)
+  Sidebar Toggle: openSidebar() and closeSidebar() functions manage sidebar responsiveness.
+  Add/Delete Services: addService() function enables adding services, while each added service has a delete button for removal.
+  Save Salon Information: saveSalonInfo() collects and displays salon data (including logo) in a modal.
+  Confirmation Modal: openConfirmationModal() and closeConfirmationModal() handle displaying and hiding a service confirmation modal.
+  Close Modal by Clicking Outside: An event listener closes modals if the user clicks outside them.
+4. CSS Styling (styles.css)
+  Grid Layout: Creates a two-column layout on larger screens, with responsive adjustments for smaller screens (single-column layout).
+  Card and Sidebar Styling: Cards are designed with shadows, borders, and color-coded accents for easy visual separation. The sidebar has distinct styling for easier navigation.
+  Form and Modal Styling: Input forms, modals, and buttons are styled with borders, colors, and hover effects for better user experience.
+
+  Todo:
+  1. Authentication System
+  Login & Registration: Implement login and registration pages with password encryption to secure user access.
+  User Roles: Add roles like "Admin," "Staff," and "Customer," with each role having different access permissions.
+  Session Management: Use session storage to maintain user login state.
+2. Appointment Booking and Management
+  Appointment Scheduler: Create a calendar view for booking appointments, allowing users to select services, staff, and time slots.
+  Customer Management: Store customer details (name, contact, service history) to improve customer service.
+  Notification System: Send email or SMS reminders to customers and staff before appointments.
+3. Enhanced Service Management
+  Service Categories: Allow services to be organized by categories (e.g., Hair, Nails, Spa) for better organization.
+  Service Pricing & Duration: Add fields for price and estimated duration to each service, displayed when adding or booking.
+  Availability Settings: Enable or disable services based on availability, season, or staff assignments.
+4. Reporting and Analytics
+  Revenue and Service Metrics: Add charts for monthly revenue, popular services, and peak hours.
+  Customer Retention and Satisfaction: Track repeat visits and customer feedback to improve service.
+  Staff Performance: Analyze performance metrics for staff based on completed services, customer ratings, or feedback.
+5. Inventory Management
+  Product Tracking: Track inventory for products used or sold in the salon, such as shampoo, conditioner, and nail polish.
+  Low Stock Alerts: Notify admins when stock falls below a certain threshold.
+  Supplier Management: Store supplier details and automate reorders when stock is low.
+6. Customizable Dashboard Layout
+  Widget Management: Allow users to add or remove widgets (like appointment calendar, analytics, recent activities) on the dashboard.
+  Drag-and-Drop Layout: Implement a drag-and-drop system to arrange widgets based on user preference.
+7. Customer Feedback and Reviews
+  Feedback Collection: Enable customers to leave feedback for specific services or staff members.
+  Rating System: Display average ratings on the dashboard for staff and services, helping customers choose popular options.
+8. Theme and Accessibility Options
+  Dark Mode: Implement a dark mode for low-light usage.
+  Font Size Adjustments: Allow users to adjust font sizes for readability.
+  Language Support: Add multilingual support for a wider customer base.
+9. Payment Integration
+  Online Payments: Integrate payment gateways (e.g., Stripe, PayPal) to allow customers to pay for services online.
+  Transaction History: Keep track of payments and generate invoices for customers.
+10. Notification System
+  Real-Time Notifications: Notify staff when an appointment is booked, canceled, or rescheduled.
+  System Alerts: Alerts for any issues (e.g., low inventory, missed appointments, etc.) to keep admins informed.
+
+ Client side:
+
+ So far:
+
+ 
