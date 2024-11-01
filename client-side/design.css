@@ -51,6 +51,10 @@ nav ul li a:hover {
     background-color: #545A67;
 }
 
+.hidden-auth-button {
+    display: none;
+}
+
 /* Navbar toggle button for mobile */
 .navbar-toggler {
     border: none;
