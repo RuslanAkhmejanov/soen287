@@ -1,6 +1,6 @@
 // Toggle sisdebar
 
-var sidebarOpen
+var sidebarOpen;
 var sidebar = document.getElementById("sidebar");
 
 function openSidebar() {
