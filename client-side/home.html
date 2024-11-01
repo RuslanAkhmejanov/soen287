@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="design.css">
     <link rel="icon" type="image/svg+xml" href="../public/assets/favicon.svg">
     <link rel="icon" type="image/png" href="../public/assets/favicon.png">
+    <script src="script.js"></script>
     <style>
         /* Smooth scrolling */
         html {
@@ -35,9 +36,12 @@
                     <li class="nav-item"><a class="nav-link" href="#staff">Our Staff</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
                 </ul>
-                <div class="ml-auto auth-buttons">
+                <div class="ml-auto auth-buttons" id="authentication-buttons">
                     <a href="../auth/signin.html" class="btn btn-outline-primary me-2">Sign In</a>
                     <a href="../auth/signup.html" class="btn btn-primary">Sign Up</a>
+                </div>
+                <div class="ml-auto auth-buttons hidden-auth-button" id="sign-out-button">
+                    <a href="../auth/signin.html" class="btn btn-outline-primary me-2" id="sign-out-link">Sign Out</a>
                 </div>
             </div>
         </nav>
