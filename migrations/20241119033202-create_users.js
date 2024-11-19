@@ -21,6 +21,11 @@ export async function up(queryInterface) {
       type: Sequelize.TEXT,
       allowNull: false
     },
+    isAdmin: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     createdAt: {
       type: Sequelize.DATE,
       allowNull: false,
