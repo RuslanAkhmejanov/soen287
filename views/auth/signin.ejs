@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="robots" content="nofollow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/auth/styles.css"/>
+        <title>Log in to the site | Hair Salon</title>
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+        <link rel="icon" type="image/png" href="/assets/favicon.png">
+        <script src="/auth/script.js"></script>
+    </head>
+    <body>
+        <div class="login-container">
+
+            <form id="sign-in-form" action="" method="">
+
+                <h1>Sign In</h1>
+
+                <div class="input-box">
+                    <% if (error) { %>
+                        <div class="input-error"><%= error %></div>
+                    <% } %>
+                    <!-- <div class="input-error"></div> -->
+                    <label for="username" class="invisible-label">Email or phone</label>
+                    <input type="text" id="username" name="username" placeholder="Email or phone">
+                </div>
+
+                <div class="input-box">
+                    <div class="input-error"></div>
+                    <label for="password" class="invisible-label">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Password">
+                    <img src="./assets/hide-icon.svg" id="eye-icon" alt="Eye icon">
+                </div>
+
+                <button type="submit" class="btn">Login</button>
+
+                <div class="sign-up-link">
+                    <p>New here? <a href="signup">Join Us</a></p>
+                </div>
+
+            </form>
+
+        </div>
+    </body>
+</html>
