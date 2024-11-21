@@ -46,9 +46,30 @@ export const signInUser = async (req, res) => {
         });
         if (!existingUser) {
             res.render('auth/signin', { error: '*user not found'});
+            return;
         }
+        bcrypt.compare(password, existingUser.password, (err, result) => {
+            if (result) {
+                req.session.userId = existingUser.id;
+                res.redirect('/'); 
+            } else {
+                res.render('auth/signin', { error: '*incorrect password'});
+            }
+        });
     } catch (err) {
         res.status(400).send();
     }
     // res.render('signin', { error: null });
+};
+
+export const signOutUser = (req, res) => {
+    req.session.destroy(err => {
+    //   if (err) {
+    //     return res.status(500).json({ error: 'Could not log out' });
+    //   }
+      res.clearCookie('connect.sid'); // Clear the cookie
+    //   res.json({ message: 'Logged out successfully' });
+      res.redirect('/');
+    });
+    // res.redirect('/');
 };

@@ -36,14 +36,17 @@
                     <li class="nav-item"><a class="nav-link" href="#staff">Our Staff</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
                 </ul>
-                <div class="ml-auto auth-buttons" id="authentication-buttons">
-                    <a href="signin" class="btn btn-outline-primary me-2">Sign In</a>
-                    <a href="signup" class="btn btn-primary">Sign Up</a>
-                </div>
-                <div class="ml-auto auth-buttons hidden-buttons" id="account-buttons">
-                    <a href="account.html" class="btn btn-outline-primary me-2" id="account-link">Account</a>
-                    <a href="../auth/signin.html" class="btn btn-primary" id="sign-out-link">Sign Out</a>
-                </div>
+                <% if (isLoggedIn) { %>
+                    <div class="ml-auto auth-buttons" id="account-buttons">
+                        <a href="account.html" class="btn btn-outline-primary me-2" id="account-link">Account</a>
+                        <a href="signout" class="btn btn-primary" id="sign-out-link">Sign Out</a>
+                    </div>
+                <% } else { %>
+                    <div class="ml-auto auth-buttons" id="authentication-buttons">
+                        <a href="signin" class="btn btn-outline-primary me-2">Sign In</a>
+                        <a href="signup" class="btn btn-primary">Sign Up</a>
+                    </div>
+                <% } %>
             </div>
         </nav>
     </header>

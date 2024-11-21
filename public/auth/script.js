@@ -4,10 +4,8 @@ let form;
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // localStorage.clear();
-
     // Retrieve stored users or create new db
-    let usersDB = JSON.parse(localStorage.getItem("users")) || [];
+    // let usersDB = JSON.parse(localStorage.getItem("users")) || [];
 
     const username = document.getElementById('username'); // present in both forms
     const password = document.getElementById('password'); // present in both forms
@@ -17,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
         form = document.getElementById('sign-in-form');
 
         if (form) {
-            console.log("I found the form");
 
             displayPassword(password, null, eyeIcon);
 
@@ -26,8 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 validInfo = validateSignInForm(username, password);
                 if (validInfo) {
                     // Validate user credentials
-                    const user = usersDB.find(user => user.username === username.value && user.password === password.value);
-                    signIn(user, username);
+                    // const user = usersDB.find(user => user.username === username.value && user.password === password.value);
+                    // signIn(user, username);
+                    event.target.submit();
                 }
             });
 

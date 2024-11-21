@@ -13,15 +13,16 @@
     <body>
         <div class="login-container">
 
-            <form id="sign-in-form" action="" method="">
+            <form id="sign-in-form" action="/signin" method="POST">
 
                 <h1>Sign In</h1>
 
                 <div class="input-box">
                     <% if (error) { %>
                         <div class="input-error"><%= error %></div>
+                    <% } else { %>
+                        <div class="input-error"></div>
                     <% } %>
-                    <!-- <div class="input-error"></div> -->
                     <label for="username" class="invisible-label">Email or phone</label>
                     <input type="text" id="username" name="username" placeholder="Email or phone">
                 </div>
