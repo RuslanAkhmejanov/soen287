@@ -1,0 +1,82 @@
+*,
+*::before,
+*::after {
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+}
+
+.login-container {
+    position: relative;
+    margin-top: 100px;
+    border: solid;
+    border-radius: 10px;
+    width: 500px;
+    background: rgb(222, 222, 222);
+    padding: 30px 0;
+}
+
+.login-container h1 {
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    color: rgb(19, 15, 64);
+}
+
+.login-container .input-box {
+    width: 100%;
+    margin: 25px 0;
+}
+
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+    padding-left: 30px;
+    
+}
+
+.input-box input {
+    height: 35px;
+    width: 93%;
+    padding: 0 5px;
+    font-size: 15px;
+    outline: none;
+    border: 1px solid silver;
+}
+    
+
+.input-box label {
+    font-size: 20px;
+    color: rgb(19, 15, 64);
+    margin: 10px 0;
+}
+
+.login-container .btn {
+    margin: 10px 0 5px 23px;
+    height: 45px;
+    width: 450px;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    outline: none;
+    cursor: pointer;
+    font-weight: bold;
+    background: rgb(26, 35, 126);
+    border-radius: 5px;
+    border: 1px solid rgb(57, 73, 171)
+}
+
+.login-container button:hover {
+    background: rgb(21, 28, 97);
+}

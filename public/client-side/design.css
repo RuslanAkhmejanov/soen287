@@ -1,0 +1,277 @@
+/* General resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #E5E3DE;
+}
+
+section {
+    margin-top: 70px;
+    padding: 80px 20px;
+}
+
+/* Navbar styling */
+.custom-navbar {
+    position: fixed;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: 0;
+    background-color: #E5E3DE;
+    width: 100%;
+}
+
+.salon-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+nav ul li a:hover {
+    color: rgb(114, 93, 167);
+}
+
+.auth-buttons .btn {
+    background-color: rgb(114, 93, 167);
+    color: #E5E3DE;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.auth-buttons .btn:hover {
+    background-color: #545A67;
+}
+
+.hidden-buttons {
+    display: none;
+}
+
+/* Navbar toggle button for mobile */
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    color: #333;
+}
+
+/* Hero section */
+#home {
+    background-image: url('images/homepage.jpeg');
+    background-size: cover;
+    background-position: center;
+    height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #E5E3DE;
+}
+
+#home h1 {
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 
+        0 0 5px rgba(69, 53, 106, 0.8),
+        0 0 10px rgba(69, 53, 106, 0.7),
+        0 0 15px rgba(69, 53, 106, 0.6),
+        0 0 20px rgba(69, 53, 106, 0.5); 
+        
+}
+
+.btn {
+    background-color: rgb(114, 93, 167);
+    color: #E5E3DE;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.btn:hover {
+    background-color: #545A67;
+}
+
+/* Open Hours Section */
+.open-hours-box {
+    background-color: #f7f7f7;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+.open-hours-box h3 {
+    font-size: 28px;
+    color: #723da3;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 2px solid #723da3;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.open-hours-list {
+    padding-left: 0;
+    font-size: 18px;
+    color: #545454;
+}
+
+.open-hours-list li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.open-hours-list li span {
+    font-weight: bold;
+    color: #333;
+}
+
+.open-hours-list li:last-child {
+    border-bottom: none;
+}
+
+/* Services Section */
+#services h2 {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+#services img {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    border-radius: 5%;
+}
+
+#services p {
+    text-align: justify;
+    padding-right: 20px;
+}
+
+#services h5 {
+    font-weight: bold;
+}
+
+/* Staff Section */
+#staff h2 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.staff-member {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+#staff img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+#staff p {
+    text-align: justify;
+    padding-top: 10px;
+}
+
+/* Contact Section */
+.contact-section {
+    background-color: #f7f7f7;
+    padding: 50px 0;
+}
+
+.contact-box {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contact-box h2 {
+    font-size: 32px;
+    color: #723da3;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.contact-description {
+    font-size: 18px;
+    color: #545454;
+    margin-bottom: 30px;
+}
+
+.contact-form .form-group {
+    margin-bottom: 20px;
+}
+
+.contact-form label {
+    font-weight: bold;
+    color: #333;
+}
+
+.contact-form input,
+.contact-form textarea {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: #723da3;
+    outline: none;
+}
+
+.submit-button {
+    background-color: #723da3;
+    color: #fff;
+    font-size: 18px;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #5e2c94;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .custom-navbar {
+        padding: 10px;
+    }
+    #home {
+        height: 500px;
+    }
+    .contact-box {
+        padding: 20px;
+    }
+    .open-hours-box {
+        padding: 20px;
+    }
+    .staff-member img {
+        max-width: 150px;
+    }
+}
