@@ -5,6 +5,7 @@ import session from 'express-session';
 import SequelizeStoreConstructor from 'connect-session-sequelize';
 
 import authRoutes from './routes/authRoutes.js';
+import contactRoutes from './routes/contactSupportRoutes.js';
 
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
@@ -57,6 +58,7 @@ app.set('views', 'views');
 
 // register routes
 app.use(authRoutes);
+app.use(contactRoutes);
 
 // default page
 app.get('/', (req, res) => {

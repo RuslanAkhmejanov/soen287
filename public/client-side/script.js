@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // overriding the dafault behaivour of the anchor tag that acts as a logout button
     const signOutLink = document.getElementById('sign-out-link');
+    // const contactForm = document.getElementById('contact-form');
     if (signOutLink) { // it is only there when a user is signed in
         signOutLink.addEventListener('click', function (event) {
             event.preventDefault();
@@ -10,11 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
             form.method = 'POST';
             form.action = '/signout';
     
-            // Optionally add CSRF token for security (optional but recommended)
+            // optionally add CSRF token for security
             // var csrfTokenInput = document.createElement('input');
             // csrfTokenInput.type = 'hidden';
-            // csrfTokenInput.name = '_csrf';  // CSRF token field (depends on your CSRF library)
-            // csrfTokenInput.value = '<%= csrfToken %>'; // CSRF token value injected by the server
+            // csrfTokenInput.name = '_csrf';
+            // csrfTokenInput.value = '<%= csrfToken %>';
             // form.appendChild(csrfTokenInput);
     
             // append the form to the body and submit it
@@ -22,4 +23,11 @@ document.addEventListener('DOMContentLoaded', function() {
             form.submit();
         });
     }
+
+    // if (contactForm) {
+    //     const name = contactForm.elements[]
+    // } else {
+    //     console.log("Form not found.")
+    // }
+
 });
