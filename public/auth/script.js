@@ -4,27 +4,24 @@ let form;
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Retrieve stored users or create new db
-    // let usersDB = JSON.parse(localStorage.getItem("users")) || [];
-
     const username = document.getElementById('username'); // present in both forms
     const password = document.getElementById('password'); // present in both forms
     const eyeIcon = document.getElementById('eye-icon') // present in both forms
 
-    if (currentPage === '/signin') {
+    if (currentPage === '/signin' || currentPage === '/admin/signin') {
         form = document.getElementById('sign-in-form');
 
         if (form) {
-
-            displayPassword(password, null, eyeIcon);
+            // there is not such functionality on the admin signin form
+            if (currentPage === '/signin') {
+                displayPassword(password, null, eyeIcon);
+            }
 
             form.addEventListener('submit', function(event) {
                 event.preventDefault();
                 validInfo = validateSignInForm(username, password);
                 if (validInfo) {
-                    // Validate user credentials
-                    // const user = usersDB.find(user => user.username === username.value && user.password === password.value);
-                    // signIn(user, username);
+                    // actually submit the form
                     event.target.submit();
                 }
             });
@@ -46,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 event.preventDefault();
                 validInfo = validateSignUpForm(name, username, password, passwordConfirmation, usersDB);
                 if (validInfo) {
-                    // signUp(name.value, username.value, password.value, usersDB);
+                    // actually submit the form
                     event.target.submit();
                 }
             });
@@ -57,24 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
-
-function signUp(name, username, password, usersDB) {
-    // Add new regular user
-    usersDB.push({ name, username, password });
-    localStorage.setItem("users", JSON.stringify(usersDB));
-
-    window.location.href = "signin.html"; // Redirect to sign-in page
-}
-
-function signIn(user, username) {
-    if (!user) {
-        const usernameContainer = username.parentElement;
-        const usernameError = usernameContainer.querySelector('.input-error');
-        usernameError.innerText = '*invalid username or password';
-    }
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
-    window.location.href = "../client-side/home.html";
-}
 
 function displayPassword(password, passwordConfirmation, eyeIcon) {
 
@@ -108,10 +87,15 @@ function setDefaultError(username, password) {
     const errorDisplay = formContainer.querySelector('.input-error');
 
     errorDisplay.innerText = '';
-    password.style.border = '7px outset rgba(12, 230, 254, 0.2)';
-
     usernameError.innerText = '';
-    username.style.border = '7px outset rgba(12, 230, 254, 0.2)';
+
+    if (currentPage === '/signin') {
+        password.style.border = '7px outset rgba(12, 230, 254, 0.2)';
+        username.style.border = '7px outset rgba(12, 230, 254, 0.2)';
+    } else if (currentPage === '/admin/signin') {
+        password.style.border = '1px solid silver';
+        username.style.border = '1px solid silver';
+    }
 }
 
 function setSuccess(element) {
@@ -151,6 +135,7 @@ function validateSignInForm(username, password) {
         setError(username, '*username is required');
         isValid = false;
     } else {
+        console.log("I am here");
         setDefaultError(username, password);
     }
 
@@ -169,9 +154,6 @@ function validateSignUpForm(name, username, password, passwordConfirmation) {
 
     let isValid = true;
 
-    // Check if username already exists
-    // const userExists = usersDB.some(user => user.username === username.value);
-
     nameValue = name.value.trim();
     usernameValue = username.value.trim();
     passwordValue = password.value.trim();
@@ -188,10 +170,6 @@ function validateSignUpForm(name, username, password, passwordConfirmation) {
         setError(username, '*username is required');
         isValid = false;
     }
-    // else if (userExists) {
-    //     setError(username, '"*username is already taken"');
-    //     isValid = false;
-    // }
     else if (!(isValidEmail(usernameValue) || isValidPhone(usernameValue))) {
         setError(username, '*phone or email must be valid');
         isValid = false;
