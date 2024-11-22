@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             form.addEventListener('submit', function(event) {
                 event.preventDefault();
-                validInfo = validateSignUpForm(name, username, password, passwordConfirmation, usersDB);
+                validInfo = validateSignUpForm(name, username, password, passwordConfirmation);
                 if (validInfo) {
                     // actually submit the form
                     event.target.submit();
