@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import express from 'express';
 import session from 'express-session';
@@ -16,6 +17,19 @@ const __filename = fileURLToPath(import.meta.url);
 const require = createRequire(__filename);
 const db = require('./models/index.cjs');
 const { sequelize, Sequelize } = db;
+
+// admin
+try {
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash('admin', salt);
+    const admin = await db.User.findOrCreate({
+        where: { username: 'admin@gmail.com' },
+        defaults: { name: 'admin', password: hashedPassword, isAdmin: true },
+    });
+    console.log('Admin created successfully.');
+} catch (error) {
+    console.error(error);
+}
 
 // sequelize session store
 const SequelizeStore = SequelizeStoreConstructor(session.Store);
