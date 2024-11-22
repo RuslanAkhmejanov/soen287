@@ -63,7 +63,7 @@ body {
 
 .input-box .input-error {
     color: rgb(255, 0, 0);
-    font-size: 12px;
+    font-size: 14px;
     margin-left: 20px;
     height: 20px;
 }
