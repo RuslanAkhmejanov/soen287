@@ -55,7 +55,9 @@
     <section id="home" class="hero-section">
         <div>
             <h1>Welcome to Hair Salon</h1>
-            <a href="/client-side/appointment.html" class="btn">Schedule an Appointment</a>
+            <% if (isLoggedIn) { %>
+                <a href="/client-side/appointment.html" class="btn">Schedule an Appointment</a>
+            <% } %>
         </div>
     </section>
 
