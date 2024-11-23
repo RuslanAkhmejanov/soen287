@@ -64,18 +64,20 @@
     </header>
 
     <!-- Hero Section -->
-    <section id="home" class="hero-section">
+    <% if (business && business.background) { %>
+        <section id="home" class="hero-section" style="background-image: url('<%= business.backgroundImage %>');">
+    <% } else { %>
+        <section id="home" class="hero-section">
+    <% } %>
         <div>
-            <section id="home" class="hero-section text-center py-5" style="background-image: url('<%= business.hero || "/client-side/images/homepage.jpeg" %>');"> 
-                <h1>
-                    Welcome to
-                    <% if (business && business.name) { %>
-                        <%= business.name %>
-                    <% } else { %>
-                        Hair Salon
-                    <% } %>
-                </h1>
-            </section>
+            <h1>
+                Welcome to
+                <% if (business && business.name) { %>
+                    <%= business.name %>
+                <% } else { %>
+                    Hair Salon
+                <% } %>
+            </h1>
 
             <% if (isLoggedIn) { %>
                 <a href="/client-side/appointment.html" class="btn">Schedule an Appointment</a>
@@ -90,12 +92,14 @@
                 <div class="open-hours-box">
                     <h3 class="text-center">Open Hours</h3>
                     <ul class="list-unstyled open-hours-list">
-                        <% if (business.hours) { %>
-                            <% business.hours.split(';').forEach((dayInfo) => { %>
-                                <li><%= dayInfo %></li>
-                            <% }) %>
+                        <% if (business && business.hours) { %>
+                            <li><span>Monday - Friday:</span> business.hours.businessHours</li>
+                            <li><span>Saturday:</span>  business.hours.saturday</li>
+                            <li><span>Sunday:</span> business.hours.sunday</li>
                         <% } else { %>
-                            <p class="text-center">Open hours not available at the moment.</p>
+                            <li><span>Monday - Friday:</span> 9 AM - 5 PM</li>
+                            <li><span>Saturday:</span> 10 AM - 4 PM</li>
+                            <li><span>Sunday:</span> Closed</li>
                         <% } %>
                     </ul>
                 </div>
