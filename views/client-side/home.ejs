@@ -5,7 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Professional hair salon offering services like coloring, styling, and haircuts for men and women.">
     <meta name="keywords" content="hair salon, haircuts, hair styling, coloring, beauty services">
-    <title><%= business.name || 'Default Business Name' %></title>
+    <title>
+        <% if (business && business.name) { %>
+            <%= business.name %>
+        <% } else { %>
+            Hair Salon
+        <% } %>
+    </title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/client-side/design.css">
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
@@ -23,7 +29,13 @@
     <header>
         <!-- Navbar with responsive hamburger menu -->
         <nav class="navbar navbar-expand-lg navbar-light custom-navbar" id="navbar">
-            <h3 class="salon-name"><%= business.name || 'Hair Salon' %></h3>
+            <h3 class="salon-name">
+                <% if (business && business.name) { %>
+                    <%= business.name %>
+                <% } else { %>
+                    Hair Salon
+                <% } %>
+            </h3>
             <!-- Hamburger Button -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -54,8 +66,15 @@
     <!-- Hero Section -->
     <section id="home" class="hero-section">
         <div>
-            <section id="home" class="hero-section text-center py-5" style="background-image: url('<%= business.hero || "/client-side/images/homepage.jpeg" %>');">
-                <h1>Welcome to <%= business.name || 'Hair Salon' %></h1>
+            <section id="home" class="hero-section text-center py-5" style="background-image: url('<%= business.hero || "/client-side/images/homepage.jpeg" %>');"> 
+                <h1>
+                    Welcome to
+                    <% if (business && business.name) { %>
+                        <%= business.name %>
+                    <% } else { %>
+                        Hair Salon
+                    <% } %>
+                </h1>
             </section>
 
             <% if (isLoggedIn) { %>
@@ -135,7 +154,7 @@
     <section id="staff" class="container-flex">
         <h2>Meet Our Staff</h2>
         <div class="row">
-            <% if (business.employees && business.employees.length > 0) { %>
+            <% if (business.employees != null && business.employees.length > 0) { %>
                 <% business.employees.forEach(employee => { %>
                     <div class="col-md-6 staff-member mb-4">
                         <h6><%= employee.name || 'Staff Member' %></h6>
@@ -145,8 +164,8 @@
                         <img src="/client-side/images/default-staff.jpeg" alt="Default Staff Image" style="width: 150px; height: auto;">
                     <% } %>
                     <p><%= employee.bio || 'Biography not available.' %></p>
-                </div>
-            <% }) %>
+                    </div>
+                <% }) %>
             <% } else { %>
             <!-- Default Staff Section -->
             <div class="col-md-6 staff-member">
