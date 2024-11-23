@@ -29,5 +29,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // } else {
     //     console.log("Form not found.")
     // }
+    document.getElementById('add-employee-btn').addEventListener('click', () => {
+        const employeeSection = document.getElementById('employees-section');
+        const newIndex = document.querySelectorAll('.employee-input').length;
+        const newEmployee = document.querySelector('.employee-input').cloneNode(true);
+
+        // Update input names to match the new index
+        newEmployee.querySelectorAll('input, textarea').forEach(input => {
+            input.name = input.name.replace(/\[\d+\]/, `[${newIndex}]`);
+            input.value = ''; // Clear input values
+        });
+
+        newEmployee.querySelector('img')?.remove(); // Remove the image preview
+        employeeSection.appendChild(newEmployee);
+    });
 
 });

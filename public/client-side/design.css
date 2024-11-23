@@ -66,8 +66,7 @@ nav ul li a:hover {
 
 /* Hero section */
 #home {
-    background-image: url('images/homepage.jpeg');
-    background-size: cover;
+    background-size: cover; 
     background-position: center;
     height: 700px;
     display: flex;

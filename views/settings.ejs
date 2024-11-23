@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/admin/styles.css">
+</head>
+<body>
+    <header>
+        <!-- Navbar with responsive hamburger menu -->
+        <nav class="navbar navbar-expand-lg navbar-light custom-navbar" id="navbar">
+            <!-- Hamburger Button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Collapsible Navbar -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active"><a class="nav-link" aria-current="page" href="#home">Salon Info</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#employees">Manage Employees</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Manage Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">View Contact Forms</a></li>
+
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container my-5">
+        <!-- Salon Info Section -->
+        <section class="mb-5">
+            <h2 class="mb-4" id = "home">Salon Information</h2>
+            <form action="/business" method="POST" enctype="multipart/form-data">
+                <!-- Salon Information -->
+                <div class="form-group">
+                    <label for="name">Salon Name</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter salon name" required>
+                </div>
+                <div class="form-group">
+                    <label for="hero">Hero Section Image</label>
+                    <input type="file" id="pictures" name="pictures" class="form-control" accept="image/*">
+                </div>
+            
+                <!-- Business Hours -->
+                <div class="form-group">
+                    <label for="hours">Business Hours</label>
+                    <% const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']; %>
+                    <% days.forEach((day) => { %>
+                        <div class="mb-3">
+                            <label for="<%= day %>"><%= day %></label>
+                            <div class="d-flex align-items-center">
+                                <select name="hours[<%= day %>][status]" class="form-control mr-2">
+                                    <option value="open">Open</option>
+                                    <option value="closed">Closed</option>
+                                </select>
+                                <select name="hours[<%= day %>][open]" class="form-control">
+                                    <% for (let hour = 0; hour < 24; hour++) { %>
+                                        <option value="<%= hour %>:00"><%= hour %>:00</option>
+                                        <option value="<%= hour %>:30"><%= hour %>:30</option>
+                                    <% } %>
+                                </select>
+                                <span class="mx-2">to</span>
+                                <select name="hours[<%= day %>][close]" class="form-control">
+                                    <% for (let hour = 0; hour < 24; hour++) { %>
+                                        <option value="<%= hour %>:00"><%= hour %>:00</option>
+                                        <option value="<%= hour %>:30"><%= hour %>:30</option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            
+                <!-- Employee Management -->
+                <h3  id = "employees">Manage Employees</h3>
+                <div id="employees-section">
+                    <% if (business.employees && business.employees.length > 0) { %>
+                        <% business.employees.forEach((employee, index) => { %>
+                            <div class="employee-input mb-4">
+                                <label for="employee-name-<%= index %>">Name</label>
+                                <input type="text" name="employees[<%= index %>][name]" class="form-control mb-2" value="<%= employee.name %>" required>
+                                <label for="employee-bio-<%= index %>">Bio</label>
+                                <textarea name="employees[<%= index %>][bio]" class="form-control mb-2" rows="3" required><%= employee.bio %></textarea>
+                                <label for="employee-image-<%= index %>">Image</label>
+                                <input type="file" name="employees[<%= index %>][image]" class="form-control mb-2" accept="image/*">
+                                <% if (employee.image) { %>
+                                    <img src="<%= employee.image %>" alt="<%= employee.name %>" style="width: 100px; height: auto;">
+                                <% } %>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="employee-input mb-4">
+                            <label for="employee-name-0">Name</label>
+                            <input type="text" name="employees[0][name]" class="form-control mb-2" placeholder="Enter employee name" required>
+                            <label for="employee-bio-0">Bio</label>
+                            <textarea name="employees[0][bio]" class="form-control mb-2" rows="3" required></textarea>
+                            <label for="employee-image-0">Image</label>
+                            <input type="file" name="employees[0][image]" class="form-control mb-2" accept="image/*">
+                        </div>
+                    <% } %>
+                </div>
+            
+                <button type="submit" class="btn btn-primary btn-block">Save Information</button>
+            </form>
+            
+
+        
+            <section>
+                <h2>Manage Services</h2>
+            
+                <!-- Add New Service -->
+                <form action="/services" method="POST" class="mb-4">
+                    <div class="form-group">
+                        <input type="text" name="name" class="form-control" placeholder="Enter new service" required>
+                        <button type="submit" class="btn btn-success mt-2">Add Service</button>
+                    </div>
+                </form>
+            
+                <!-- Service List -->
+                <ul class="list-group">
+                    <% if (services && services.length > 0) { %>
+                        <% services.forEach((service) => { %>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><%= service.name %></span>
+                                <form action="/services/<%= service.id %>/delete" method="POST">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </li>
+                        <% }); %>
+                    <% } else { %>
+                        <li class="list-group-item">No services available.</li>
+                    <% } %>
+                </ul>
+            </section>
+            
+
+   
+    <script src="/client-side/script.js"></script>
+</body>
+</html>

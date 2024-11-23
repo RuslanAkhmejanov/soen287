@@ -3,42 +3,47 @@ import crypto from 'crypto';
 import express from 'express';
 import session from 'express-session';
 import SequelizeStoreConstructor from 'connect-session-sequelize';
-
-import authRoutes from './routes/authRoutes.js';
-import contactRoutes from './routes/contactSupportRoutes.js';
-
+import path from 'path';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 
+import authRoutes from './routes/authRoutes.js';
+import contactRoutes from './routes/contactSupportRoutes.js';
+import businessRoutes from './routes/businessRoutes.js';
+import serviceRoutes from './routes/serviceRoutes.js'; // Fix the import here
+
 const app = express();
-const PORT = 5000;
+const PORT = 5001;
 
-// not defined in ES modules, so need to manually do it
+// Define __filename and __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
-const require = createRequire(__filename);
+const __dirname = path.dirname(__filename);
+const require = createRequire(import.meta.url);
+
 const db = require('./models/index.cjs');
-const { sequelize, Sequelize } = db;
+const { sequelize } = db;
 
-// admin
-try {
-    const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash('admin', salt);
-    const admin = await db.User.findOrCreate({
-        where: { username: 'admin@gmail.com' },
-        defaults: { name: 'admin', password: hashedPassword, isAdmin: true },
-    });
-    console.log('Admin created successfully.');
-} catch (error) {
-    console.error(error);
-}
+// Admin setup
+(async () => {
+    try {
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash('admin', salt);
+        const admin = await db.User.findOrCreate({
+            where: { username: 'admin@gmail.com' },
+            defaults: { name: 'admin', password: hashedPassword, isAdmin: true },
+        });
+        console.log('Admin created successfully.');
+    } catch (error) {
+        console.error(error);
+    }
+})();
 
-// sequelize session store
+// Configure session store
 const SequelizeStore = SequelizeStoreConstructor(session.Store);
 const sessionStore = new SequelizeStore({ db: sequelize });
-// against forging (server uses it to verify session IDs)
 const sessionSecret = crypto.randomBytes(64).toString('hex');
 
-// configuration of express-session with connect-session-sequelize
+// Configure session middleware
 app.use(session({
     secret: sessionSecret,
     store: sessionStore,
@@ -47,30 +52,51 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 60 * 24 }, // 1 day
 }));
 
-// middleware
-app.use(express.static('public'));  // to serve static files (html, css, js)
-app.use(express.urlencoded({ extended: false }));  // parse url-encoded bodies (html encodes them)
-app.use(express.json());  // parse in json format
+// Middleware setup
+app.use(express.static('public')); // Serve static files
+app.use(express.urlencoded({ extended: false })); // Parse URL-encoded bodies
+app.use(express.json()); // Parse JSON bodies
 
-// view engine
+// Set view engine
 app.set('view engine', 'ejs');
-app.set('views', 'views');
+app.set('views', path.join(__dirname, 'views'));
 
-// register routes
+// Register routes
 app.use(authRoutes);
 app.use(contactRoutes);
+app.use(businessRoutes);
+app.use(serviceRoutes); // Properly imported and used here
 
-// default page
+// Default page
 app.get('/', (req, res) => {
     const isLoggedIn = req.session.userId ? true : false;
-    res.render('client-side/home', { isLoggedIn });
+    const business = {
+        name: 'Hair Salon',
+        logo: 'images/homepage.jpeg',
+        hours: 'Monday: 9am - 5pm;Tuesday: 9am - 5pm;Wednesday: 9am - 5pm;Thursday: 9am - 5pm;Friday: 9am - 5pm;Saturday: 9am - 5pm;Sunday: Closed',
+    };
+    res.render('client-side/home', { business, isLoggedIn });
 });
 
-// start server
+// Settings page
+app.get('/settings', async (req, res) => {
+    try {
+        const business = await db.Business.findOne({ where: { id: 1 } });
+        const services = await db.Service.findAll();
+        res.render('settings', { business, services });
+    } catch (error) {
+        console.error('Error fetching business information:', error.message);
+        res.status(500).send('Error fetching business information');
+    }
+});
+
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-// sync the session table with the database
-await sequelize.sync();
-sessionStore.sync();
+// Sync the session table with the database
+(async () => {
+    await sequelize.sync();
+    sessionStore.sync();
+})();
