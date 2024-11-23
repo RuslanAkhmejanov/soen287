@@ -3,7 +3,6 @@ import crypto from 'crypto';
 import express from 'express';
 import session from 'express-session';
 import SequelizeStoreConstructor from 'connect-session-sequelize';
-import path from 'path';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 
@@ -16,14 +15,13 @@ import serviceRoutes from './routes/serviceRoutes.js';
 const app = express();
 const PORT = 5000;
 
-// Define __filename and __dirname for ES modules
+// not defined in ES modules, so need to manually do it
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const require = createRequire(import.meta.url);
+const require = createRequire(__filename);
 const db = require('./models/index.cjs');
 const { sequelize } = db;
 
-// Admin setup
+// admin setup
 (async () => {
     try {
         const salt = await bcrypt.genSalt();
@@ -38,28 +36,29 @@ const { sequelize } = db;
     }
 })();
 
-// Configure session store
+// sequelize session store
 const SequelizeStore = SequelizeStoreConstructor(session.Store);
 const sessionStore = new SequelizeStore({ db: sequelize });
+// against forging (server uses it to verify session IDs)
 const sessionSecret = crypto.randomBytes(64).toString('hex');
 
-// Configure session middleware
+// configuration of express-session with connect-session-sequelize
 app.use(session({
     secret: sessionSecret,
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 }, // 1 day
+    cookie: { maxAge: 1000 * 60 * 60 * 24 },  // 1 day
 }));
 
-// Middleware setup
-app.use(express.static('public')); // Serve static files
-app.use(express.urlencoded({ extended: false })); // Parse URL-encoded bodies
-app.use(express.json()); // Parse JSON bodies
+// middleware
+app.use(express.static('public'));  // to serve static files (html, css, js)
+app.use(express.urlencoded({ extended: false }));  // parse url-encoded bodies (html encodes them)
+app.use(express.json()); // parse in json format
 
-// Set view engine
+// register routes
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', 'views');
 
 // Register routes
 app.use(authRoutes);
@@ -68,7 +67,7 @@ app.use(accountRoutes);
 app.use(businessRoutes);
 app.use(serviceRoutes);
 
-// Default page
+// default page
 app.get('/', async (req, res) => {
     const isLoggedIn = req.session.userId ? true : false;
     try {
@@ -81,7 +80,7 @@ app.get('/', async (req, res) => {
     }
 });
 
-// Settings page
+// settings page
 app.get('/settings', async (req, res) => {
     try {
         const business = await db.Business.findOne({ where: { id: 1 } });
@@ -93,12 +92,12 @@ app.get('/settings', async (req, res) => {
     }
 });
 
-// Start the server
+// start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-// Sync the session table with the database
+// sync the session table with the database
 (async () => {
     await sequelize.sync();
     sessionStore.sync();
