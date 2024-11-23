@@ -9,17 +9,17 @@ import { fileURLToPath } from 'url';
 
 import authRoutes from './routes/authRoutes.js';
 import contactRoutes from './routes/contactSupportRoutes.js';
+import accountRoutes from './routes/accountRoutes.js';
 import businessRoutes from './routes/businessRoutes.js';
-import serviceRoutes from './routes/serviceRoutes.js'; // Fix the import here
+import serviceRoutes from './routes/serviceRoutes.js';
 
 const app = express();
-const PORT = 5001;
+const PORT = 5000;
 
 // Define __filename and __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const require = createRequire(import.meta.url);
-
 const db = require('./models/index.cjs');
 const { sequelize } = db;
 
@@ -64,18 +64,21 @@ app.set('views', path.join(__dirname, 'views'));
 // Register routes
 app.use(authRoutes);
 app.use(contactRoutes);
+app.use(accountRoutes);
 app.use(businessRoutes);
-app.use(serviceRoutes); // Properly imported and used here
+app.use(serviceRoutes);
 
 // Default page
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     const isLoggedIn = req.session.userId ? true : false;
-    const business = {
-        name: 'Hair Salon',
-        logo: 'images/homepage.jpeg',
-        hours: 'Monday: 9am - 5pm;Tuesday: 9am - 5pm;Wednesday: 9am - 5pm;Thursday: 9am - 5pm;Friday: 9am - 5pm;Saturday: 9am - 5pm;Sunday: Closed',
-    };
-    res.render('client-side/home', { business, isLoggedIn });
+    try {
+        const business = await db.Business.findOne({
+            order: [['id', 'DESC']]
+        });
+        res.render('client-side/home', { business, isLoggedIn });
+    } catch (error) {
+        res.status(500).send();
+    }
 });
 
 // Settings page
