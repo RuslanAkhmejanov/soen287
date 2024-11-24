@@ -1,47 +1,52 @@
 'use strict';
 
-export default {
+module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Businesses', {
       id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        allowNull: false,
       },
       name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       hours: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      staffMembers: {
-        type: Sequelize.TEXT,
+        type: Sequelize.JSON,
         allowNull: true,
       },
       logo: {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      pictures: {
-        type: Sequelize.TEXT,
+      backgroundPic: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      staffMembers: {
+        type: Sequelize.JSON,
+        allowNull: true,
+      },
+      services: {
+        type: Sequelize.JSON,
         allowNull: true,
       },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     });
   },
 
-  down: async (queryInterface) => {
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Businesses');
   },
 };
-

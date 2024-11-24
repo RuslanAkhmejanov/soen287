@@ -92,6 +92,8 @@
                 <div class="open-hours-box">
                     <h3 class="text-center">Open Hours</h3>
                     <ul class="list-unstyled open-hours-list">
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
                         <% if (business && business.hours) { %>
                             <li><span>Monday - Friday:</span> business.hours.businessHours</li>
                             <li><span>Saturday:</span>  business.hours.saturday</li>
@@ -101,6 +103,17 @@
                             <li><span>Saturday:</span> 10 AM - 4 PM</li>
                             <li><span>Sunday:</span> Closed</li>
                         <% } %>
+=======
+=======
+>>>>>>> Stashed changes
+                        <% const businessHours = (business && business.hours) || { businessHours: '9 AM - 5 PM', saturday: '10 AM - 4 PM', sunday: 'Closed' }; %>
+                        <li><span>Monday - Friday:</span> <%= businessHours.businessHours %></li>
+                        <li><span>Saturday:</span> <%= businessHours.saturday %></li>
+                        <li><span>Sunday:</span> <%= businessHours.sunday %></li>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
                     </ul>
                 </div>
             </div>
@@ -109,55 +122,36 @@
 
 
     <!-- Services Section -->
-    <section id="services" class="container my-5">
+    <section id="services" class="mb-5">
         <h2 class="text-center mb-4">Our Services</h2>
         <div class="row">
-            <% if (services && services.length > 0) { %>
-                <% services.forEach((service) => { %>
+            <% const parsedServices = JSON.parse(services || '[]'); %>
+            <% if (Array.isArray(parsedServices) && parsedServices.length > 0) { %>
+                <% parsedServices.forEach((service, index) => { %>
                     <div class="col-md-4">
                         <div class="card mb-4">
                             <div class="card-body text-center">
                                 <h5 class="card-title"><%= service.name %></h5>
+                                <img src="<%= service.image %>" alt="<%= service.name %>">
+                                <p class="card-text"><%= service.description %></p>
                             </div>
                         </div>
                     </div>
-                <% }); %>
+                <% }) %>
             <% } else { %>
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5>Coloring - $100</h5>
-                        <img src="/client-side/images/coloring.jpeg" alt="Coloring">
-                        <p>Revitalize your hair with our professional coloring services. Whether you're looking for bold highlights, natural balayage, or a complete color change, our skilled colorists will deliver vibrant, lasting results.</p>
-                    </div>
-                    <div class="col-md-6">
-                        <h5>Haircut Women - $60</h5>
-                        <img src="/client-side/images/womencut.jpeg" alt="Haircut Women">
-                        <p>Our women’s haircut services offer personalized styling tailored to your unique preferences. Whether you desire a chic bob, layered cut, or something bold, we ensure a flawless finish every time.</p>
-                    </div>
-                </div>
-        
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5>Haircut Men - $50</h5>
-                        <img src="/client-side/images/mencut.jpeg" alt="Haircut Men">
-                        <p>Achieve a sharp and polished look with our expert men’s haircut services. From classic styles to modern trends, our barbers deliver precision and attention to detail for a fresh, confident look.</p>
-                    </div>
-                    <div class="col-md-6">
-                        <h5>Styling - $70</h5>
-                        <img src="/client-side/images/styling.jpeg" alt="Styling">
-                        <p>Elevate your look with our professional hair styling services. From sleek updos to soft waves, we create styles that perfectly complement any occasion, ensuring you leave feeling fabulous.</p>
-                    </div>
-                </div>
+                <p class="text-center">No services available at the moment.</p>
             <% } %>
         </div>
     </section>
     
 
     <!-- Staff Section -->
-
-    <section id="staff" class="container-flex">
-        <h2>Meet Our Staff</h2>
+    <section id="staff" class="mb-5">
+        <h2 class="text-center mb-4">Our Staff</h2>
+        <!-- Staff Members Section -->
         <div class="row">
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
             <% if (business.employees != null && business.employees.length > 0) { %>
                 <% business.employees.forEach(employee => { %>
                     <div class="col-md-6 staff-member mb-4">
@@ -168,31 +162,24 @@
                         <img src="/client-side/images/default-staff.jpeg" alt="Default Staff Image" style="width: 150px; height: auto;">
                     <% } %>
                     <p><%= employee.bio || 'Biography not available.' %></p>
+=======
+=======
+>>>>>>> Stashed changes
+            <% const parsedStaffMembers = JSON.parse(staffMembers || '[]'); %>
+            <% if (Array.isArray(parsedStaffMembers) && parsedStaffMembers.length > 0) { %>
+                <% parsedStaffMembers.forEach((staffMember, index) => { %>
+                    <div class="col-md-6 staff-member">
+                        <h6><%= staffMember.name %></h6>
+                        <img src="<%= staffMember.image %>" alt="<%= staffMember.name %>">
+                        <p><%= staffMember.bio %></p>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
                     </div>
                 <% }) %>
             <% } else { %>
-            <!-- Default Staff Section -->
-            <div class="col-md-6 staff-member">
-                <h6>Sarah Williams – Senior Hairstylist</h6>
-                <img src="/client-side/images/Sarah.jpeg" alt="Sarah Williams">
-                <p>With over 10 years of experience, Sarah specializes in color correction, balayage, and precision cutting. She offers expert care for all hair types and is certified in advanced coloring techniques.</p>
-            </div>
-            <div class="col-md-6 staff-member">
-                <h6>Jasmine Lee – Creative Stylist</h6>
-                <img src="/client-side/images/Jasmine.jpeg" alt="Jasmine Lee">
-                <p>Jasmine brings creativity to every session with her expertise in fashion-forward colors and men's grooming. She’s known for her artistic approach to haircuts and styles.</p>
-            </div>
-
-            <div class="col-md-6 staff-member">
-                <h6>Mark Reynolds – Salon Manager & Hairstylist</h6>
-                <img src="/client-side/images/Mark.jpeg" alt="Mark Reynolds">
-                <p>With 12 years of experience in both styling and management, Mark specializes in classic cuts, professional styling, and customer service. Organized and friendly, he ensures the salon runs smoothly while providing top-tier service to every client.</p>
-            </div>
-            <div class="col-md-6 staff-member">
-                <h6>Emily Turner – Junior Stylist</h6>
-                <img src="/client-side/images/Emily.jpeg" alt="Emily Turner">
-                <p>With two years of experience as an assistant and stylist, Emily specializes in blowouts, hair braiding, and color treatments. Bubbly and enthusiastic, she is passionate about learning new techniques and delivering top-notch service.</p>
-            </div>
+                <p>No staff members available at the moment.</p>
             <% } %>
         </div>
     </section>

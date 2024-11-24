@@ -7,11 +7,17 @@ const process = require('process');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 const User = require('./user.cjs');
 const ContactMessage = require('./contactMessage.cjs');
 const Business = require('./business.cjs'); 
 const Service = require('./service.cjs')
 
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 const db = {};
 
 let sequelize;
@@ -35,8 +41,8 @@ fs
     return (
       file.indexOf('.') !== 0 &&
       file !== basename &&
-      file.slice(-3) === '.js' &&
-      file.indexOf('.test.js') === -1
+      file.slice(-4) === '.cjs' &&
+      file.indexOf('.test.cjs') === -1
     );
   })
   .forEach(file => {
@@ -52,11 +58,24 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 db.User = User(sequelize, Sequelize.DataTypes);
 db.ContactMessage = ContactMessage(sequelize, Sequelize.DataTypes);
 db.Business = Business(sequelize, Sequelize.DataTypes);
 db.Service = Service(sequelize, Sequelize.DataTypes);
 
+=======
+db.User = require('./user.cjs')(sequelize, Sequelize.DataTypes);
+db.ContactMessage = require('./contactMessage.cjs')(sequelize, Sequelize.DataTypes);
+db.Business = require('./business.cjs')(sequelize, Sequelize.DataTypes);
+>>>>>>> Stashed changes
+=======
+db.User = require('./user.cjs')(sequelize, Sequelize.DataTypes);
+db.ContactMessage = require('./contactMessage.cjs')(sequelize, Sequelize.DataTypes);
+db.Business = require('./business.cjs')(sequelize, Sequelize.DataTypes);
+>>>>>>> Stashed changes
 
 module.exports = db;
+
 

@@ -7,31 +7,29 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     hours: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    staffMembers: {
-      type: DataTypes.TEXT, // Store JSON string for staff members
+      type: DataTypes.JSON,
       allowNull: true,
-      get() {
-        const rawData = this.getDataValue('staffMembers');
-        return rawData ? JSON.parse(rawData) : [];
-      },
-      set(value) {
-        this.setDataValue('staffMembers', JSON.stringify(value));
-      },
     },
     logo: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    pictures: {
-      type: DataTypes.TEXT,
+    backgroundPic: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    staffMembers: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
+    services: {
+      type: DataTypes.JSON,
       allowNull: true,
     },
   });
 
   return Business;
 };
+
 
 

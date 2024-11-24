@@ -1,54 +1,110 @@
 import multer from 'multer';
 import path from 'path';
 
-// Configure the storage for uploaded files
+// Set storage engine
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'public/uploads'); // Directory to store uploaded files
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`); // Unique filename
-    },
+  destination: './public/uploads/',
+  filename: function (req, file, cb) {
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
+  }
 });
 
-// Middleware for business-related assets
-export const uploadBusinessAssets = multer({
-    storage,
-    limits: {
-        fileSize: 10 * 1024 * 1024, // Max file size: 10 MB
-        files: 15, // Total max files allowed
-    },
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype.startsWith('image/')) {
-            cb(null, true); // Allow only image files
-        } else {
-            cb(new Error('Only image files are allowed!'));
-        }
-    },
-}).fields([
-    { name: 'logo', maxCount: 1 }, // Single logo image
-    { name: 'pictures', maxCount: 10 }, // Multiple business pictures
+// Check file type
+function checkFileType(file, cb) {
+  const filetypes = /jpeg|jpg|png|gif/;
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = filetypes.test(file.mimetype);
+
+  if (mimetype && extname) {
+    return cb(null, true);
+  } else {
+    cb(new Error('Error: Images Only!'));
+  }
+}
+
+// File filter
+const fileFilter = (req, file, cb) => {
+  checkFileType(file, cb);
+};
+
+// Create a multer instance with the defined configuration
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // Limit files to 5MB
+  },
+});
+
+// Define reusable middleware for specific fields
+export const uploadBusinessAssets = upload.fields([
+  { name: 'logo', maxCount: 1 },       // Single file for 'logo'
+  { name: 'backgroundPic', maxCount: 1 }, // Single file for 'backgroundPic'
 ]);
 
-// Middleware for dynamically added employee images
-export const uploadEmployeeImages = multer({
+const safeParseJSON = (json) => {
+    try {
+        return typeof json === 'string' ? JSON.parse(json) : json;
+    } catch (error) {
+        console.error('JSON parsing error:', error);
+        return [];
+    }
+};
+
+// Middleware to handle dynamic staff member image fields
+export const uploadStaffMemberImages = (req, res, next) => {
+  const staffMemberFields = [];
+  if (req.body.staffMembers) {
+    const staffMembers = safeParseJSON(req.body.staffMembers || "[]");
+    Object.keys(staffMembers).forEach(index => {
+      staffMemberFields.push({ name: `staffMembers[${index}][image]`, maxCount: 1 });
+    });
+  }
+
+  const uploadStaffMember = multer({
     storage,
+    fileFilter,
     limits: {
-        fileSize: 10 * 1024 * 1024, // Max file size per file: 10 MB
-        files: 10, // Limit total number of files for employees
+      fileSize: 5 * 1024 * 1024, // Limit files to 5MB
     },
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype.startsWith('image/')) {
-            cb(null, true); // Allow only image files
-        } else {
-            cb(new Error('Only image files are allowed!'));
-        }
+  }).fields(staffMemberFields);
+
+  uploadStaffMember(req, res, (err) => {
+    if (err) {
+      console.error('File upload error:', err);
+      return res.status(400).send({ error: 'File upload failed', details: err.message });
+    }
+    next();
+  });
+};
+
+// Middleware to handle dynamic service image fields
+export const uploadServiceImages = (req, res, next) => {
+  const serviceFields = [];
+  if (req.body.services) {
+    const services = safeParseJSON(req.body.services || "[]");
+    Object.keys(services).forEach(index => {
+      serviceFields.push({ name: `services[${index}][image]`, maxCount: 1 });
+    });
+  }
+
+  const uploadService = multer({
+    storage,
+    fileFilter,
+    limits: {
+      fileSize: 5 * 1024 * 1024, // Limit files to 5MB
     },
-}).fields([
-    { name: 'employees[0][image]', maxCount: 1 },
-    { name: 'employees[1][image]', maxCount: 1 },
-    { name: 'employees[2][image]', maxCount: 1 },
-    { name: 'employees[3][image]', maxCount: 1 },
-    { name: 'employees[4][image]',maxCount: 1 },
-    // Add more fields as needed to handle more employee images dynamically
-]);
+  }).fields(serviceFields);
+
+  uploadService(req, res, (err) => {
+    if (err) {
+      console.error('File upload error:', err);
+      return res.status(400).send({ error: 'File upload failed', details: err.message });
+    }
+    next();
+  });
+};
+
+export default upload;
+

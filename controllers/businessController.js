@@ -1,57 +1,66 @@
 import db from '../models/index.cjs';
 
+const safeParseJSON = (json) => {
+    try {
+        return typeof json === 'string' ? JSON.parse(json) : json;
+    } catch (error) {
+        console.error('JSON parsing error:', error);
+        return [];
+    }
+};
+
 export const saveBusinessInfo = async (req, res) => {
-    const { name, hours, staffMembers, employees } = req.body;
+    const { name, hours, staffMembers, services } = req.body;
 
-    // Extract file paths from multer
-    const logoUrl = req.files?.logo ? req.files.logo[0].path : null;
-    const pictureUrls = req.files?.pictures
-        ? req.files.pictures.map((file) => file.path).join(',')
-        : null;
+    const logoUrl = req.files?.logo?.[0]?.path || null;
+    const backgroundPicUrl = req.files?.backgroundPic?.[0]?.path || null;
 
-    // Process employee data
-    const employeeData = employees
-        ? Object.entries(employees).map(([index, employee]) => ({
-              name: employee.name,
-              bio: employee.bio,
-              image: req.files[`employees[${index}][image]`]?.[0]?.path || employee.image || null,
-          }))
-        : [];
+    // Safely parse the fields
+    const parsedStaffMembers = safeParseJSON(staffMembers);
+    const parsedServices = safeParseJSON(services);
+
+    const staffMemberData = parsedStaffMembers.map((staffMember, index) => ({
+        name: staffMember.name,
+        bio: staffMember.bio,
+        image: req.files[`staffMembers[${index}][image]`]?.[0]?.path || staffMember.image || null,
+    }));
+
+    const serviceData = parsedServices.map((service, index) => ({
+        name: service.name,
+        description: service.description,
+        image: req.files[`services[${index}][image]`]?.[0]?.path || service.image || null,
+    }));
 
     try {
-        // Find or create the business entry
-        const existingBusiness = await db.Business.findOne({ where: { id: 1 } });
+        const business = await db.Business.findOne({ where: { id: 1 } });
 
-        if (existingBusiness) {
-            await existingBusiness.update({
-                name,
-                hours,
-                staffMembers,
-                logo: logoUrl,
-                pictures: pictureUrls,
-                employees: JSON.stringify(employeeData),
+        if (business) {
+            await business.update({
+                name: name || business.name,
+                hours: JSON.parse(hours || '{}'),
+                staffMembers: JSON.stringify(staffMemberData),
+                services: JSON.stringify(serviceData),
+                logo: logoUrl || business.logo,
+                backgroundPic: backgroundPicUrl || business.backgroundPic,
             });
         } else {
             await db.Business.create({
-                id: 1,
-                name,
-                hours,
-                staffMembers,
+                name: name || 'Your Business Name',
+                hours: JSON.parse(hours || '{}'),
+                staffMembers: JSON.stringify(staffMemberData),
+                services: JSON.stringify(serviceData),
                 logo: logoUrl,
-                pictures: pictureUrls,
-                employees: JSON.stringify(employeeData),
+                backgroundPic: backgroundPicUrl,
             });
         }
 
         res.redirect('/settings');
     } catch (error) {
-        console.error('Error saving business information:', error.message, error.stack);
+        console.error('Error saving business information:', error.message);
         res.status(500).send('Error saving business information');
     }
 
     console.log('req.body:', req.body);
     console.log('req.files:', req.files);
-
 };
-
 
