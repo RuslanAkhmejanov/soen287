@@ -5,17 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Professional hair salon offering services like coloring, styling, and haircuts for men and women.">
     <meta name="keywords" content="hair salon, haircuts, hair styling, coloring, beauty services">
-    <title>
-        <% if (business && business.name) { %>
-            <%= business.name %>
-        <% } else { %>
-            Hair Salon
-        <% } %>
-    </title>
+    <title><%= business.name %></title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/client-side/design.css">
-    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-    <link rel="icon" type="image/png" href="/assets/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="<%= business.logos.svg %>">
+    <link rel="icon" type="image/png" href="<%= business.logos.png %>">
     <script src="client-side/script.js"></script>
     <style>
         /* Smooth scrolling */
@@ -29,13 +23,7 @@
     <header>
         <!-- Navbar with responsive hamburger menu -->
         <nav class="navbar navbar-expand-lg navbar-light custom-navbar" id="navbar">
-            <h3 class="salon-name">
-                <% if (business && business.name) { %>
-                    <%= business.name %>
-                <% } else { %>
-                    Hair Salon
-                <% } %>
-            </h3>
+            <h3 class="salon-name"><%= business.name %></h3>
             <!-- Hamburger Button -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -64,20 +52,9 @@
     </header>
 
     <!-- Hero Section -->
-    <% if (business && business.background) { %>
-        <section id="home" class="hero-section" style="background-image: url('<%= business.backgroundImage %>');">
-    <% } else { %>
-        <section id="home" class="hero-section">
-    <% } %>
+    <section id="home" class="hero-section" style="background-image: url('<%= business.backgroundPic %>');">
         <div>
-            <h1>
-                Welcome to
-                <% if (business && business.name) { %>
-                    <%= business.name %>
-                <% } else { %>
-                    Hair Salon
-                <% } %>
-            </h1>
+            <h1>Welcome to <%= business.name %></h1>
 
             <% if (isLoggedIn) { %>
                 <a href="/client-side/appointment.html" class="btn">Schedule an Appointment</a>
@@ -92,10 +69,9 @@
                 <div class="open-hours-box">
                     <h3 class="text-center">Open Hours</h3>
                     <ul class="list-unstyled open-hours-list">
-                        <% const businessHours = (business && business.hours) || { businessHours: '9 AM - 5 PM', saturday: '10 AM - 4 PM', sunday: 'Closed' }; %>
-                        <li><span>Monday - Friday:</span> <%= businessHours.businessHours %></li>
-                        <li><span>Saturday:</span> <%= businessHours.saturday %></li>
-                        <li><span>Sunday:</span> <%= businessHours.sunday %></li>
+                        <li><span>Monday - Friday:</span> <%= business.hours.businessHours %></li>
+                        <li><span>Saturday:</span> <%= business.hours.saturday %></li>
+                        <li><span>Sunday:</span> <%= business.hours.sunday %></li>
                     </ul>
                 </div>
             </div>
@@ -104,19 +80,16 @@
 
 
     <!-- Services Section -->
-    <section id="services" class="mb-5">
+    <section id="services" class="container-flex">
         <h2 class="text-center mb-4">Our Services</h2>
         <div class="row">
-            <% const parsedServices = JSON.parse(services || '[]'); %>
-            <% if (Array.isArray(parsedServices) && parsedServices.length > 0) { %>
-                <% parsedServices.forEach((service, index) => { %>
-                    <div class="col-md-4">
-                        <div class="card mb-4">
-                            <div class="card-body text-center">
-                                <h5 class="card-title"><%= service.name %></h5>
-                                <img src="<%= service.image %>" alt="<%= service.name %>">
-                                <p class="card-text"><%= service.description %></p>
-                            </div>
+            <% if (Array.isArray(business.services) && business.services.length > 0) { %>
+                <% business.services.forEach(service => { %>
+                    <div class="col-md-6">
+                        <div class="card-body text-center">
+                            <h5 class="card-title"><%= service.name %> - $<%= service.price %></h5>
+                            <img src="<%= service.image %>" alt="<%= service.name %>">
+                            <p class="card-text"><%= service.description %></p>
                         </div>
                     </div>
                 <% }) %>
@@ -125,18 +98,16 @@
             <% } %>
         </div>
     </section>
-    
 
     <!-- Staff Section -->
-    <section id="staff" class="mb-5">
-        <h2 class="text-center mb-4">Our Staff</h2>
+    <section id="staff" class="container-flex">
+        <h2 class="text-center mb-4">Meet Our Staff</h2>
         <!-- Staff Members Section -->
         <div class="row">
-            <% const parsedStaffMembers = JSON.parse(staffMembers || '[]'); %>
-            <% if (Array.isArray(parsedStaffMembers) && parsedStaffMembers.length > 0) { %>
-                <% parsedStaffMembers.forEach((staffMember, index) => { %>
+            <% if (Array.isArray(business.staffMembers) && business.staffMembers.length > 0) { %>
+                <% business.staffMembers.forEach(staffMember => { %>
                     <div class="col-md-6 staff-member">
-                        <h6><%= staffMember.name %></h6>
+                        <h6><%= staffMember.name %> - <%= staffMember.jobTitle %></h6>
                         <img src="<%= staffMember.image %>" alt="<%= staffMember.name %>">
                         <p><%= staffMember.bio %></p>
                     </div>
