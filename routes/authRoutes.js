@@ -6,6 +6,7 @@ import {
     signOutUser, getSignInAdmin,
     signInAdmin, getAdmin
 } from '../controllers/authController.js';
+import { authMiddleware } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -13,9 +14,9 @@ router.get('/signup', getSignUp);
 router.post('/signup', createUser);
 router.get('/signin', getSignIn);
 router.post('/signin', signInUser);
-router.post('/signout', signOutUser);
+router.post('/signout', authMiddleware, signOutUser);
 router.get('/admin/signin', getSignInAdmin);
 router.post('/admin/signin', signInAdmin);
-router.get('/admin', getAdmin);
+router.get('/admin', authMiddleware, getAdmin);
 
 export default router;
