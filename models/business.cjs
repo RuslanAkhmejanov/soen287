@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.JSON,
       allowNull: true,
     },
-    logo: {
-      type: DataTypes.STRING,
+    logos: {
+      type: DataTypes.JSON,
       allowNull: true,
     },
     backgroundPic: {
