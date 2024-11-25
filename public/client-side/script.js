@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // create a form element dynamically
             var form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/signout';
-    
+            form.action = signOutLink.getAttribute('href');
+
             // optionally add CSRF token for security
             // var csrfTokenInput = document.createElement('input');
             // csrfTokenInput.type = 'hidden';
