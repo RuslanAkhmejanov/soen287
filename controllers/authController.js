@@ -72,38 +72,3 @@ export const signOutUser = (req, res) => {
       res.redirect('/');
     });
 };
-
-export const getSignInAdmin = (req, res) => {
-    res.render('admin/auth/signin', { error: null });
-};
-
-export const signInAdmin = async (req, res) => {
-    const { username, password } = req.body;
-    try {
-        const existingUser = await db.User.findOne({
-            where: {
-              username: username,
-              isAdmin: true
-            }
-        });
-        if (!existingUser) {
-            res.render('admin/auth/signin', { error: '*incorrect username or password'});
-            return;
-        }
-        bcrypt.compare(password, existingUser.password, (err, result) => {
-            if (result) {
-                req.session.userId = existingUser.id;
-                res.redirect('/admin'); 
-            } else {
-                res.render('admin/auth/signin', { error: '*incorrect username or password'});
-            }
-        });
-    } catch (err) {
-        res.status(400).send();
-    }
-};
-
-export const getAdmin = (req, res) => {
-    const filePath = path.join(__dirname, 'public', 'admin/index.html');
-    res.sendFile(filePath);
-};
