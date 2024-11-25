@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.JSON,
       allowNull: true,
     },
-    backgroundPic: {
-      type: DataTypes.STRING,
+    backgroundPics: {
+      type: DataTypes.JSON,
       allowNull: true,
     },
     staffMembers: {

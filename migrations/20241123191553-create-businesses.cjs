@@ -17,12 +17,12 @@ module.exports = {
         type: Sequelize.JSON,
         allowNull: true,
       },
-      logo: {
-        type: Sequelize.STRING,
+      logos: {
+        type: Sequelize.JSON,
         allowNull: true,
       },
-      backgroundPic: {
-        type: Sequelize.STRING,
+      backgroundPics: {
+        type: Sequelize.JSON,
         allowNull: true,
       },
       staffMembers: {
