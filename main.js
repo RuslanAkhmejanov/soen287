@@ -5,13 +5,14 @@ import session from 'express-session';
 import SequelizeStoreConstructor from 'connect-session-sequelize';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
-import multer from 'multer';
 import upload from './middlewares/upload.js';
 
 import authRoutes from './routes/authRoutes.js';
 import contactRoutes from './routes/contactSupportRoutes.js';
 import accountRoutes from './routes/accountRoutes.js';
 import businessRoutes from './routes/businessRoutes.js';
+import adminRoutes from './routes/adminRoutes.js'
+import { parseBusinessData, safeParseJSON } from './helpers/businessHelper.js';
 
 const app = express();
 const PORT = 5000;
@@ -27,16 +28,6 @@ const SequelizeStore = SequelizeStoreConstructor(session.Store);
 const sessionStore = new SequelizeStore({ db: sequelize });
 // against forging (server uses it to verify session IDs)
 const sessionSecret = crypto.randomBytes(64).toString('hex');
-
-// Safe JSON parsing function
-const safeParseJSON = (json) => {
-    try {
-        return typeof json === 'string' ? JSON.parse(json) : json;
-    } catch (error) {
-        console.error('JSON parsing error:', error);
-        return [];
-    }
-};
 
 // Middleware to parse request fields
 const parseRequestFields = (req, res, next) => {
@@ -76,6 +67,7 @@ app.use(authRoutes);
 app.use(contactRoutes);
 app.use(accountRoutes);
 app.use(businessRoutes);
+app.use(adminRoutes);
 
 // admin setup
 (async () => {
@@ -186,31 +178,8 @@ app.get('/', async (req, res) => {
         const business = await db.Business.findOne({
             order: [['id', 'DESC']]
         });
-        business.logos = safeParseJSON(business.logos);
-        business.hours = safeParseJSON(business.hours);
-        business.services = safeParseJSON(business.services);
-        business.staffMembers = safeParseJSON(business.staffMembers);
+        parseBusinessData(business);
         res.render('client-side/home', { business, isLoggedIn});
-    } catch (error) {
-        console.error('Error fetching business information:', error.message);
-        res.status(500).send('Error fetching business information');
-    }
-});
-
-// settings page
-app.get('/settings', async (req, res) => {
-    try {
-        const business = await db.Business.findOne({ where: { id: 1 } });
-
-        let staffMembers = [];
-        let services = [];
-
-        if (business) {
-            staffMembers = safeParseJSON(business.staffMembers || "[]");
-            services = safeParseJSON(business.services || "[]");
-        }
-
-        res.render('settings', { business, staffMembers, services });
     } catch (error) {
         console.error('Error fetching business information:', error.message);
         res.status(500).send('Error fetching business information');
