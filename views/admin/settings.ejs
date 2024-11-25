@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= business.name %> | Settings</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/admin/styles.css">
+    <link rel="icon" type="image/svg+xml" href="<%= business.logos.svg %>">
+    <link rel="icon" type="image/png" href="<%= business.logos.png %>">
+    <script src="/client-side/script.js"></script>
+</head>
+<body>
+    <header>
+        <!-- Navbar with responsive hamburger menu -->
+        <nav class="navbar navbar-expand-lg navbar-light custom-navbar" id="navbar">
+            <!-- Hamburger Button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Collapsible Navbar -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active"><a class="nav-link" aria-current="page" href="#home">Salon Info</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#staff">Manage Staff Members</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Manage Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">View Contact Forms</a></li>
+                </ul>
+            </div>
+            <div class="ml-auto auth-buttons" id="account-buttons">
+                <a href="signout" class="btn btn-primary" id="sign-out-link">Sign Out</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container my-5">
+        <!-- Salon Info Section -->
+        <section class="mb-5">
+            <h2 class="mb-4" id="home">Salon Information</h2>
+            <form class="form-horizontal" action="/settings" method="POST" enctype="multipart/form-data">
+                <!-- Salon Information -->
+                <div class="form-group">
+                    <label for="name">Salon Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="<%= business.name ? business.name : '' %>">
+                </div>
+                <div class="form-group">
+                    <label for="hours">Hours</label>
+                    <div id="business-hours">
+                        <% Object.keys(business.hours).forEach(function(day) { %>
+                            <div class="mb-2">
+                                <label><%= day %></label>
+                                <div class="d-flex">
+                                    <input type="text" class="form-control mr-2" name="hours[<%= day %>][status]" value="<%= business.hours[day].status %>" placeholder="Open/Closed">
+                                    <input type="time" class="form-control mr-2" name="hours[<%= day %>][open]" value="<%= business.hours[day].open %>">
+                                    <input type="time" class="form-control" name="hours[<%= day %>][close]" value="<%= business.hours[day].close %>">
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="logo">Logo</label>
+                    <input type="file" class="form-control-file" id="logo" name="logo">
+                </div>
+                <div class="form-group">
+                    <label for="backgroundPic">Background Picture</label>
+                    <input type="file" class="form-control-file" id="backgroundPic" name="backgroundPic">
+                </div>
+
+                <!-- Staff Members Section -->
+                <div id="staff-members-section">
+                    <h3>Manage Staff Members</h3>
+                    <% if (Array.isArray(business.staffMembers) && business.staffMembers.length > 0) { %>
+                        <% business.staffMembers.forEach((staffMember, index) => { %>
+                            <div class="staff-member-input mb-4">
+                                <label for="staff-member-name-<%= index %>">Name</label>
+                                <input type="text" class="form-control" id="staff-member-name-<%= index %>" name="staffMembers[<%= index %>][name]" value="<%= staffMember.name %>">
+                                <label for="staff-member-name-<%= index %>">Job Title</label>
+                                <input type="text" class="form-control" id="staff-member-job-title-<%= index %>" name="staffMembers[<%= index %>][jobTitle]" value="<%= staffMember.jobTitle %>">
+                                <label for="staff-member-bio-<%= index %>">Bio</label>
+                                <textarea class="form-control" id="staff-member-bio-<%= index %>" name="staffMembers[<%= index %>][bio]"><%= staffMember.bio %></textarea>
+                                <label for="staff-member-image-<%= index %>">Image</label>
+                                <input type="file" class="form-control-file" id="staff-member-image-<%= index %>" name="staffMembers[<%= index %>][image]">
+                                <button type="button" class="btn btn-danger remove-staff-member">Remove</button>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p>No staff members available at the moment.</p>
+                    <% } %>
+                    <button type="button" class="btn btn-primary" id="add-staff-member">Add Staff Member</button>
+                </div>
+
+                <!-- Services Section -->
+                <div id="services-section">
+                    <h3>Manage Services</h3>
+                    <% if (Array.isArray(business.services) && business.services.length > 0) { %>
+                        <% business.services.forEach((service, index) => { %>
+                            <div class="service-input mb-4">
+                                <label for="service-name-<%= index %>">Name</label>
+                                <input type="text" class="form-control" id="service-name-<%= index %>" name="services[<%= index %>][name]" value="<%= service.name %>">
+                                <label for="service-name-<%= index %>">Price</label>
+                                <input type="text" class="form-control" id="service-name-<%= index %>" name="services[<%= index %>][price]" value="<%= service.price %>">
+                                <label for="service-description-<%= index %>">Description</label>
+                                <textarea class="form-control" id="service-description-<%= index %>" name="services[<%= index %>][description]"><%= service.description %></textarea>
+                                <label for="service-image-<%= index %>">Image</label>
+                                <input type="file" class="form-control-file" id="service-image-<%= index %>" name="services[<%= index %>][image]">
+                                <button type="button" class="btn btn-danger remove-service">Remove</button>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p>No services available at the moment.</p>
+                    <% } %>
+                    <button type="button" class="btn btn-primary" id="add-service">Add Service</button>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
