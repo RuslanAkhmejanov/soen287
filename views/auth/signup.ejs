@@ -5,12 +5,12 @@
         <meta name="robots" content="nofollow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/auth/styles.css"/>
-        <title>Sign up | Hair Salon</title>
-        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-        <link rel="icon" type="image/png" href="/assets/favicon.png">
+        <title>Sign up | <%= business.name %></title>
+        <link rel="icon" type="image/svg+xml" href="<%= business.logos.svg %>">
+        <link rel="icon" type="image/png" href="<%= business.logos.png %>">
         <script src="/auth/script.js"></script>
     </head>
-    <body>
+    <body style="background-image: url('<%= business.backgroundPics.authPage %>')">
         <div class="login-container">
             <form id="sign-up-form" action="/signup" method="POST">
                 <h1>Sign Up</h1>

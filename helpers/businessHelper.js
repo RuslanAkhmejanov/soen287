@@ -6,6 +6,7 @@
 export function parseBusinessData(business) {
     business.logos = safeParseJSON(business.logos);
     business.hours = safeParseJSON(business.hours);
+    business.backgroundPics = safeParseJSON(business.backgroundPics);
     business.services = safeParseJSON(business.services);
     business.staffMembers = safeParseJSON(business.staffMembers);
     return business;

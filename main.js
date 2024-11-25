@@ -98,7 +98,10 @@ app.use(adminRoutes);
             svg: '/assets/favicon.svg',
             png: '/assets/favicon.png'
         };
-        const backgroundPic = '/client-side/images/homepage.jpeg';
+        const backgroundPics = {
+            homePage: '/client-side/images/homepage.jpeg',
+            authPage: '/auth/assets/background1.jpg'
+        };
         const services = [
             {
                 name: "Coloring",
@@ -159,7 +162,7 @@ app.use(adminRoutes);
                 name: name,
                 hours: hours,
                 logos: logos,
-                backgroundPic: backgroundPic,
+                backgroundPics: backgroundPics,
                 staffMembers: staffMembers,
                 services: services
             })

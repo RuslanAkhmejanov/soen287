@@ -22,7 +22,8 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: rgb(247, 237, 225) url('assets/background1.jpg') no-repeat;
+    background-color: rgb(247, 237, 225);
+    background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
 }
