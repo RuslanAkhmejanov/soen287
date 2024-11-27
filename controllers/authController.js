@@ -29,8 +29,12 @@ export const createUser = async (req, res) => {
               username: username
             }
         });
+        const business = await db.Business.findOne({
+            order: [['id', 'DESC']]
+        });
+        parseBusinessData(business);
         if (existingUser) {
-            res.render('auth/signup', { error: '*username is already taken' });
+            res.render('auth/signup', { error: '*username is already taken', business: business });
         }
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -57,13 +61,17 @@ export const getSignIn = async (req, res) => {
 export const signInUser = async (req, res) => {
     const { username, password } = req.body;
     try {
+        const business = await db.Business.findOne({
+            order: [['id', 'DESC']]
+        });
+        parseBusinessData(business);
         const existingUser = await db.User.findOne({
             where: {
               username: username
             }
         });
         if (!existingUser) {
-            res.render('auth/signin', { error: '*user not found'});
+            res.render('auth/signin', { error: '*user not found', business: business });
             return;
         }
         bcrypt.compare(password, existingUser.password, (err, result) => {
@@ -71,7 +79,7 @@ export const signInUser = async (req, res) => {
                 req.session.userId = existingUser.id;
                 res.redirect('/'); 
             } else {
-                res.render('auth/signin', { error: '*incorrect password'});
+                res.render('auth/signin', { error: '*incorrect password', business: business });
             }
         });
     } catch (err) {
