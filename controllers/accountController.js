@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 
+import { parseBusinessData } from '../helpers/businessHelper.js';
+
 // not defined in ES modules, so need to manually do it
 const __filename = fileURLToPath(import.meta.url);
 const require = createRequire(__filename);
@@ -10,7 +12,11 @@ const db = require('../models/index.cjs');
 export const getAccount = async (req, res) => {
     try {
         const user = await db.User.findByPk(req.session.userId);
-        res.render('client-side/account', { user: user });
+        const business = await db.Business.findOne({
+            order: [['id', 'DESC']]
+        });
+        parseBusinessData(business);
+        res.render('client-side/account', { user: user, business: business });
     } catch (error) {
         res.status(500).send();
     }

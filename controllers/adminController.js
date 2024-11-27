@@ -46,9 +46,10 @@ export const getAdmin = async (req, res) => {
         const business = await db.Business.findOne({
             order: [['id', 'DESC']]
         });
+        const contactMessages = await db.ContactMessage.findAll();
         parseBusinessData(business);
         convertTimeRange(business);
-        res.render('admin/settings', { business});
+        res.render('admin/settings', { business, contactRequests: contactMessages });
     } catch (error) {
         console.error('Error fetching business information:', error.message);
         res.status(500).send('Error fetching business information');
