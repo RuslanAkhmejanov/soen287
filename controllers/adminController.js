@@ -181,6 +181,7 @@ export const updateBusinessInfo = async (req, res) => {
         });
 
         business.save(req.body);
+        res.redirect('/admin');
     } catch (error) {
         res.status(500).send();
         console.log(error);
