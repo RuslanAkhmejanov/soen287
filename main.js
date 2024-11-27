@@ -5,14 +5,12 @@ import session from 'express-session';
 import SequelizeStoreConstructor from 'connect-session-sequelize';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
-import upload from './middlewares/upload.js';
 
 import authRoutes from './routes/authRoutes.js';
 import contactRoutes from './routes/contactSupportRoutes.js';
 import accountRoutes from './routes/accountRoutes.js';
-import businessRoutes from './routes/businessRoutes.js';
 import adminRoutes from './routes/adminRoutes.js'
-import { parseBusinessData, safeParseJSON } from './helpers/businessHelper.js';
+import { parseBusinessData } from './helpers/businessHelper.js';
 
 const app = express();
 const PORT = 5000;
@@ -29,18 +27,6 @@ const sessionStore = new SequelizeStore({ db: sequelize });
 // against forging (server uses it to verify session IDs)
 const sessionSecret = crypto.randomBytes(64).toString('hex');
 
-// Middleware to parse request fields
-const parseRequestFields = (req, res, next) => {
-    try {
-        req.body.staffMembers = safeParseJSON(req.body.staffMembers || "[]");
-        req.body.services = safeParseJSON(req.body.services || "[]");
-        next();
-    } catch (error) {
-        console.error('Error parsing request fields:', error.message);
-        res.status(400).send({ error: 'Invalid request fields' });
-    }
-};
-
 // middleware
 app.use(express.static('public')); // Serve static files
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies (handles nested fields)
@@ -55,9 +41,6 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 60 * 24 },  // 1 day
 }));
 
-// Use the parseRequestFields middleware before multer
-app.use(parseRequestFields);
-
 // set view engine
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -66,7 +49,6 @@ app.set('views', 'views');
 app.use(authRoutes);
 app.use(contactRoutes);
 app.use(accountRoutes);
-app.use(businessRoutes);
 app.use(adminRoutes);
 
 // admin setup
@@ -189,56 +171,6 @@ app.get('/', async (req, res) => {
     }
 });
 
-app.post('/settings', upload.fields([
-    { name: 'logo', maxCount: 1 },
-    { name: 'backgroundPic', maxCount: 1 },
-    { name: 'staffMembers[][image]', maxCount: 1 },
-    { name: 'services[][image]', maxCount: 1 }
-]), async (req, res) => {
-    const { name, hours, staffMembers, services } = req.body;
-
-    // Process staff member data
-    const staffMemberData = safeParseJSON(staffMembers).map((staffMember, index) => ({
-        name: staffMember.name,
-        bio: staffMember.bio,
-        image: req.files[`staffMembers[${index}][image]`]?.[0]?.path || staffMember.image || null,
-    }));
-
-    // Process service data
-    const serviceData = safeParseJSON(services).map((service, index) => ({
-        name: service.name,
-        description: service.description,
-        image: req.files[`services[${index}][image]`]?.[0]?.path || service.image || null,
-    }));
-
-    try {
-        const business = await db.Business.findOne({ where: { id: 1 } });
-
-        if (business) {
-            await business.update({
-                name: name || business.name,
-                hours: hours || business.hours,
-                staffMembers: JSON.stringify(staffMemberData.length ? staffMemberData : business.staffMembers),
-                services: JSON.stringify(serviceData.length ? serviceData : business.services),
-            });
-        } else {
-            await db.Business.create({
-                name: name || 'Your Business Name',
-                hours: hours || 'Your Hours Info',
-                staffMembers: JSON.stringify(staffMemberData),
-                services: JSON.stringify(serviceData),
-                logo: req.files.logo ? req.files.logo[0].path : 'public/assets/default_logo.png',
-                backgroundPic: req.files.backgroundPic ? req.files.backgroundPic[0].path : 'public/client-side/images/default_background.jpeg',
-            });
-        }
-
-        res.redirect('/settings');
-    } catch (error) {
-        console.error('Error saving business information:', error.message);
-        res.status(500).send('Error saving business information');
-    }
-});
-
 // start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
@@ -248,7 +180,7 @@ app.listen(PORT, () => {
 (async () => {
     try {
         await sequelize.sync();
-        await sessionStore.sync();
+        sessionStore.sync();
         console.log('Database synced successfully');
     } catch (error) {
         console.error('Error syncing the database:', error.message);

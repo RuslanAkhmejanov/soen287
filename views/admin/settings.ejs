@@ -39,22 +39,27 @@
         <!-- Salon Info Section -->
         <section class="mb-5">
             <h2 class="mb-4" id="home">Salon Information</h2>
-            <form class="form-horizontal" action="/settings" method="POST" enctype="multipart/form-data">
+            <form class="form-horizontal" action="/admin/update" method="POST" enctype="multipart/form-data">
                 <!-- Salon Information -->
                 <div class="form-group">
                     <label for="name">Salon Name</label>
-                    <input type="text" class="form-control" id="name" name="name" value="<%= business.name ? business.name : '' %>">
+                    <input type="text" class="form-control" id="name" name="name" value="<%= business.name ? business.name : '' %>" required>
                 </div>
                 <div class="form-group">
                     <label for="hours">Hours</label>
                     <div id="business-hours">
-                        <% Object.keys(business.hours).forEach(function(day) { %>
+                        <% Object.keys(business.hours).forEach(function(day, index) { %>
                             <div class="mb-2">
                                 <label><%= day %></label>
                                 <div class="d-flex">
-                                    <input type="text" class="form-control mr-2" name="hours[<%= day %>][status]" value="<%= business.hours[day].status %>" placeholder="Open/Closed">
-                                    <input type="time" class="form-control mr-2" name="hours[<%= day %>][open]" value="<%= business.hours[day].open %>">
-                                    <input type="time" class="form-control" name="hours[<%= day %>][close]" value="<%= business.hours[day].close %>">
+                                    <% if (business.hours[day] === 'Closed') { %>
+                                        <input type="text" class="form-control mr-2" name="hours[0][<%= day %>]" value="Closed">
+                                    <% } else { %>
+                                        <% const time = business.hours[day].split(" "); %>
+                                        <input type="text" class="form-control mr-2" name="hours[0][<%= day %>]" value="<%= time[0] %>">
+                                        <input type="time" class="form-control mr-2" name="hours[0][<%= day %>]" value="<%= time[1] %>">
+                                        <input type="time" class="form-control mr-2" name="hours[0][<%= day %>]" value="<%= time[2] %>">
+                                    <% } %>
                                 </div>
                             </div>
                         <% }) %>
@@ -65,61 +70,61 @@
                     <input type="file" class="form-control-file" id="logo" name="logo">
                 </div>
                 <div class="form-group">
-                    <label for="backgroundPic">Background Picture (Home Page)</label>
-                    <input type="file" class="form-control-file" id="backgroundPic" name="backgroundPic">
+                    <label for="homePageBackgroundPic">Background Picture (Home Page)</label>
+                    <input type="file" class="form-control-file" id="homePageBackgroundPic" name="homePageBackgroundPic">
                 </div>
                 <div class="form-group">
-                    <label for="backgroundPic">Background Picture (Authorization Pages)</label>
-                    <input type="file" class="form-control-file" id="backgroundPic" name="backgroundPic">
+                    <label for="authPageBackgroundPic">Background Picture (Authorization Pages)</label>
+                    <input type="file" class="form-control-file" id="authPageBackgroundPic" name="authPageBackgroundPic">
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
+
+                <!-- Staff Members Section -->
+                <div id="staff-members-section">
+                    <h3>Manage Staff Members</h3>
+                    <% if (Array.isArray(business.staffMembers) && business.staffMembers.length > 0) { %>
+                        <% business.staffMembers.forEach((staffMember, index) => { %>
+                            <div class="staff-member-input mb-4">
+                                <label for="staff-member-name-<%= index %>">Name</label>
+                                <input type="text" class="form-control" id="staff-member-name-<%= index %>" name="staffMembers[<%= index %>][name]" value="<%= staffMember.name %>" required>
+                                <label for="staff-member-name-<%= index %>">Job Title</label>
+                                <input type="text" class="form-control" id="staff-member-job-title-<%= index %>" name="staffMembers[<%= index %>][jobTitle]" value="<%= staffMember.jobTitle %>">
+                                <label for="staff-member-bio-<%= index %>">Bio</label>
+                                <textarea class="form-control" id="staff-member-bio-<%= index %>" name="staffMembers[<%= index %>][bio]"><%= staffMember.bio %></textarea>
+                                <label for="staff-member-image-<%= index %>">Image</label>
+                                <input type="file" class="form-control-file" id="staff-member-image-<%= index %>" name="staffMembers[<%= index %>][image]">
+                                <button type="button" class="btn btn-danger remove-staff-member">Remove</button>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p>No staff members available at the moment.</p>
+                    <% } %>
+                    <button type="button" class="btn btn-primary" id="add-staff-member">Add Staff Member</button>
+                </div>
+
+                <!-- Services Section -->
+                <div id="services-section">
+                    <h3>Manage Services</h3>
+                    <% if (Array.isArray(business.services) && business.services.length > 0) { %>
+                        <% business.services.forEach((service, index) => { %>
+                            <div class="service-input mb-4">
+                                <label for="service-name-<%= index %>">Name</label>
+                                <input type="text" class="form-control" id="service-name-<%= index %>" name="services[<%= index %>][name]" value="<%= service.name %>" required>
+                                <label for="service-name-<%= index %>">Price</label>
+                                <input type="text" class="form-control" id="service-name-<%= index %>" name="services[<%= index %>][price]" value="<%= service.price %>">
+                                <label for="service-description-<%= index %>">Description</label>
+                                <textarea class="form-control" id="service-description-<%= index %>" name="services[<%= index %>][description]"><%= service.description %></textarea>
+                                <label for="service-image-<%= index %>">Image</label>
+                                <input type="file" class="form-control-file" id="service-image-<%= index %>" name="services[<%= index %>][image]">
+                                <button type="button" class="btn btn-danger mt-2 remove-service">Remove</button>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p>No services available at the moment.</p>
+                    <% } %>
+                    <button type="button" class="btn btn-primary" id="add-service">Add Service</button>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg mt-5">Update</button>
             </form>
-
-            <!-- Staff Members Section -->
-            <div id="staff-members-section">
-                <h3>Manage Staff Members</h3>
-                <% if (Array.isArray(business.staffMembers) && business.staffMembers.length > 0) { %>
-                    <% business.staffMembers.forEach((staffMember, index) => { %>
-                        <div class="staff-member-input mb-4">
-                            <label for="staff-member-name-<%= index %>">Name</label>
-                            <input type="text" class="form-control" id="staff-member-name-<%= index %>" name="staffMembers[<%= index %>][name]" value="<%= staffMember.name %>">
-                            <label for="staff-member-name-<%= index %>">Job Title</label>
-                            <input type="text" class="form-control" id="staff-member-job-title-<%= index %>" name="staffMembers[<%= index %>][jobTitle]" value="<%= staffMember.jobTitle %>">
-                            <label for="staff-member-bio-<%= index %>">Bio</label>
-                            <textarea class="form-control" id="staff-member-bio-<%= index %>" name="staffMembers[<%= index %>][bio]"><%= staffMember.bio %></textarea>
-                            <label for="staff-member-image-<%= index %>">Image</label>
-                            <input type="file" class="form-control-file" id="staff-member-image-<%= index %>" name="staffMembers[<%= index %>][image]">
-                            <button type="button" class="btn btn-danger remove-staff-member">Remove</button>
-                        </div>
-                    <% }) %>
-                <% } else { %>
-                    <p>No staff members available at the moment.</p>
-                <% } %>
-                <button type="button" class="btn btn-primary" id="add-staff-member">Add Staff Member</button>
-            </div>
-
-            <!-- Services Section -->
-            <div id="services-section">
-                <h3>Manage Services</h3>
-                <% if (Array.isArray(business.services) && business.services.length > 0) { %>
-                    <% business.services.forEach((service, index) => { %>
-                        <div class="service-input mb-4">
-                            <label for="service-name-<%= index %>">Name</label>
-                            <input type="text" class="form-control" id="service-name-<%= index %>" name="services[<%= index %>][name]" value="<%= service.name %>">
-                            <label for="service-name-<%= index %>">Price</label>
-                            <input type="text" class="form-control" id="service-name-<%= index %>" name="services[<%= index %>][price]" value="<%= service.price %>">
-                            <label for="service-description-<%= index %>">Description</label>
-                            <textarea class="form-control" id="service-description-<%= index %>" name="services[<%= index %>][description]"><%= service.description %></textarea>
-                            <label for="service-image-<%= index %>">Image</label>
-                            <input type="file" class="form-control-file" id="service-image-<%= index %>" name="services[<%= index %>][image]">
-                            <button type="button" class="btn btn-danger remove-service">Remove</button>
-                        </div>
-                    <% }) %>
-                <% } else { %>
-                    <p>No services available at the moment.</p>
-                <% } %>
-                <button type="button" class="btn btn-primary" id="add-service">Add Service</button>
-            </div>
         </section>
     </main>
 </body>

@@ -10,13 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
             var form = document.createElement('form');
             form.method = 'POST';
             form.action = signOutLink.getAttribute('href');
-
-            // optionally add CSRF token for security
-            // var csrfTokenInput = document.createElement('input');
-            // csrfTokenInput.type = 'hidden';
-            // csrfTokenInput.name = '_csrf';
-            // csrfTokenInput.value = '<%= csrfToken %>';
-            // form.appendChild(csrfTokenInput);
     
             // append the form to the body and submit it
             document.body.appendChild(form);
@@ -24,29 +17,81 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // if (contactForm) {
-    //     const name = contactForm.elements[]
-    // } else {
-    //     console.log("Form not found.")
-    // }
+    // delete time inputs if the business is closed
+    const statusInputs = document.querySelectorAll('input[type="text"].form-control.mr-2');
 
+    statusInputs.forEach(input => {
+        input.addEventListener('input', function () {
+            const parentDiv = this.closest('.d-flex'); // Find the parent container of the inputs
+            const timeInputs = parentDiv.querySelectorAll('input[type="time"]'); // Select time inputs within the same section
 
-    // Add new staff member
+            if (this.value.toLowerCase() === 'closed') {
+                this.value = 'Closed';
+                // Remove time inputs if status is Closed
+                timeInputs.forEach(timeInput => timeInput.remove());
+            } else if (this.value.toLowerCase() === 'open') {
+                this.value = 'Open';
+                // Add time inputs if not present and status is Open
+                if (timeInputs.length === 0) {
+                    const startTimeInput = document.createElement('input');
+                    startTimeInput.type = 'time';
+                    startTimeInput.className = 'form-control mr-2';
+                    startTimeInput.name = input.name;
+                    startTimeInput.required = true;
+
+                    const endTimeInput = document.createElement('input');
+                    endTimeInput.type = 'time';
+                    endTimeInput.className = 'form-control mr-2';
+                    endTimeInput.name = input.name;
+                    endTimeInput.required = true;
+
+                    // Insert the new inputs into the parent container
+                    this.after(startTimeInput, endTimeInput);
+                }
+            }
+        });
+    });
+
     const addStaffMemberButton = document.getElementById('add-staff-member');
+    let newStaffMemberTemplate = null; // This will hold the initial cloned template
+
     if (addStaffMemberButton) {
+        // Clone the template once before any clicks
+        const firstStaffMember = document.querySelector('.staff-member-input');
+        if (firstStaffMember) {
+            newStaffMemberTemplate = firstStaffMember.cloneNode(true);
+        }
+
         addStaffMemberButton.addEventListener('click', () => {
             const staffSection = document.getElementById('staff-members-section');
-            const newIndex = document.querySelectorAll('.staff-member-input').length;
-            const newStaffMember = document.querySelector('.staff-member-input').cloneNode(true);
+            
+            // Get the current number of staff member inputs to calculate the new index
+            const newIndex = document.querySelectorAll('.staff-member-input').length || 0;
 
-            // Update input names to match the new index
-            newStaffMember.querySelectorAll('input, textarea').forEach(input => {
-                input.name = input.name.replace(/\[\d+\]/, `[${newIndex}]`);
-                input.value = ''; // Clear input values
-            });
+            // Use the cloned template (if it exists) to create a new staff member input
+            if (newStaffMemberTemplate) {
+                const newStaffMember = newStaffMemberTemplate.cloneNode(true); // Clone it again each time
 
-            newStaffMember.querySelector('img')?.remove(); // Remove the image preview
-            staffSection.insertBefore(newStaffMember, addStaffMemberButton);
+                // Update input names and values for the new staff member
+                newStaffMember.querySelectorAll('input, textarea').forEach(input => {
+                    // Update the name attributes to use the correct index
+                    input.name = input.name.replace(/\[\d+\]/, `[${newIndex}]`);
+                    input.value = ''; // Clear input values
+                    input.required = true; // Make input required
+                });
+
+                // Optionally remove any image preview (if there was one)
+                newStaffMember.querySelector('img')?.remove();
+
+                // Add the new staff member input above the "add staff member" button
+                staffSection.insertBefore(newStaffMember, addStaffMemberButton);
+            }
+            const staffInputs = document.querySelectorAll('.staff-member-input');
+
+            // If there are 10 or more staff members, hide the "Add Staff Member" button
+            if (staffInputs.length >= 10) {
+                addStaffMemberButton.style.display = 'none'; // Hide the button
+            }
         });
     }
 
@@ -54,24 +99,54 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', (event) => {
         if (event.target.classList.contains('remove-staff-member')) {
             event.target.closest('.staff-member-input').remove();
+
+            const staffInputs = document.querySelectorAll('.staff-member-input');
+
+            // If the number of staff inputs is less than 10, show the "Add Staff Member" button
+            const addStaffMemberButton = document.getElementById('add-staff-member');
+            if (staffInputs.length < 10) {
+                addStaffMemberButton.style.display = '';  // Show the button again
+            }
         }
     });
 
     // Add new service
     const addServiceButton = document.getElementById('add-service');
+    let serviceTemplate = null; // This will hold the initial cloned template
+
     if (addServiceButton) {
+        // Clone the template once before any clicks
+        const firstService = document.querySelector('.service-input');
+        if (firstService) {
+            serviceTemplate = firstService.cloneNode(true);
+        }
         addServiceButton.addEventListener('click', () => {
             const serviceSection = document.getElementById('services-section');
-            const newIndex = document.querySelectorAll('.service-input').length;
-            const newService = document.querySelector('.service-input').cloneNode(true);
+            const newIndex = document.querySelectorAll('.service-input').length || 0;
 
-            // Update input names to match the new index
-            newService.querySelectorAll('input, textarea').forEach(input => {
-                input.name = input.name.replace(/\[\d+\]/, `[${newIndex}]`);
-                input.value = ''; // Clear input values
-            });
+            // Use the cloned template (if it exists) to create a new staff member input
+            if (serviceTemplate) {
+                const newService = serviceTemplate.cloneNode(true); // Clone it again each time
 
-            serviceSection.insertBefore(newService, addServiceButton);
+                // Update input names and values for the new staff member
+                newService.querySelectorAll('input, textarea').forEach(input => {
+                    // Update the name attributes to use the correct index
+                    input.name = input.name.replace(/\[\d+\]/, `[${newIndex}]`);
+                    input.value = ''; // Clear input values
+                    input.required = true; // Make input required
+                });
+
+                // Optionally remove any image preview (if there was one)
+                newService.querySelector('img')?.remove();
+
+                // Add the new staff member input above the "add staff member" button
+                serviceSection.insertBefore(newService, addServiceButton);
+            }
+
+            const serviceInputs = document.querySelectorAll('.service-input');
+            if (serviceInputs.length >= 10) {
+                addServiceButton.style.display = 'none'; // Hide the button
+            }
         });
     }
 
@@ -79,6 +154,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', (event) => {
         if (event.target.classList.contains('remove-service')) {
             event.target.closest('.service-input').remove();
+
+            const serviceInputs = document.querySelectorAll('.service-input');
+            // If the number of staff inputs is less than 10, show the "Add Staff Member" button
+            const addServiceButton = document.getElementById('add-service');
+            if (serviceInputs.length < 10) {
+                addServiceButton.style.display = '';  // Show the button again
+            }
         }
     });
 
