@@ -16,7 +16,12 @@ export const getAccount = async (req, res) => {
             order: [['id', 'DESC']]
         });
         parseBusinessData(business);
-        res.render('client-side/account', { user: user, business: business });
+        const appointments = await db.Appointment.findAll({
+            where: {
+                userId: user.id
+            }
+        })
+        res.render('client-side/account', { user: user, business: business, appointments: appointments });
     } catch (error) {
         res.status(500).send();
     }
