@@ -34,6 +34,44 @@
         </nav>
     </header>
 
+    <div class="container my-5">
+        <h2 class="mb-4">Appointments</h2>
+        
+        <!-- Table for appointments -->
+        <table class="table table-bordered table-striped">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th>Service</th>
+              <th>Employee</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="appointments-table-body">
+            <% if (appointments && appointments.length > 0) { %>
+                <% appointments.forEach((appointment, index) => { %>
+                  <tr>
+                    <th scope="row"><%= index + 1 %></th>
+                    <td><%= appointment.service %></td>
+                    <td><%= appointment.employee %></td>
+                    <td><%= appointment.date %></td>
+                    <td><%= appointment.time %></td>
+                    <td><%= appointment.status %></td>
+                    <td><button class="btn btn-success btn-sm" onclick="approveAppointment(<%= appointment.id %>)">Approve</button></td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="7" class="text-center text-muted">No requests at the moment</td>
+                </tr>
+              <% } %>
+          </tbody>
+        </table>
+      </div>
+
       <!-- Main Content -->
     <div class="container mt-5">
         <h2 class="mb-4">User Contact Requests</h2>
@@ -51,9 +89,9 @@
         </thead>
         <tbody>
             <% if (contactRequests && contactRequests.length > 0) { %>
-              <% contactRequests.forEach(request => { %>
+              <% contactRequests.forEach((request, index) => { %>
                 <tr>
-                  <th scope="row"><%= request.id %></th>
+                  <th scope="row"><%= index + 1 %></th>
                   <td><%= request.name %></td>
                   <td><%= request.email %></td>
                   <td><%= request.message %></td>
@@ -62,7 +100,7 @@
               <% }); %>
             <% } else { %>
               <tr>
-                <td colspan="7" class="text-center text-muted">No requests at the moment</td>
+                <td colspan="5" class="text-center text-muted">No requests at the moment</td>
               </tr>
             <% } %>
           </tbody>
@@ -161,6 +199,36 @@
             </form>
         </section>
     </main>
+
+    <script>
+        function approveAppointment(appointmentId) {
+            // Make a DELETE request to your server
+            fetch(`/appointments/${appointmentId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Success - Remove the appointment row from the table or show success message
+                    alert('Appointment canceled successfully!');
+                    location.reload();
+                    // document.getElementById(`appointment-${appointmentId}`).remove();
+                } else {
+                    // Handle errors
+                    return response.json().then(err => {
+                        throw new Error(err.message);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error canceling appointment:', error);
+                alert('Failed to cancel appointment. Please try again.');
+            });
+
+        }
+    </script>
 
 </body>
 </html>
