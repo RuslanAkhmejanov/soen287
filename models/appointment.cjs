@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      employee: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       status: {
         type: DataTypes.STRING,
         allowNull: false,

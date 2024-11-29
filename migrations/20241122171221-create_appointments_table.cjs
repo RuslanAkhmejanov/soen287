@@ -30,6 +30,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      employee: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       status: {
         type: Sequelize.STRING,
         defaultValue: 'Pending',
@@ -51,4 +55,3 @@ module.exports = {
     await queryInterface.dropTable('Appointments');
   },
 };
-

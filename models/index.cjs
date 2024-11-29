@@ -10,6 +10,7 @@ const config = require(__dirname + '/../config/config.json')[env];
 const User = require('./user.cjs');
 const ContactMessage = require('./contactMessage.cjs');
 const Business = require('./business.cjs'); 
+const Appointment = require('./appointment.cjs');
 
 const db = {};
 
@@ -54,5 +55,6 @@ db.Sequelize = Sequelize;
 db.User = User(sequelize, Sequelize.DataTypes);
 db.ContactMessage = ContactMessage(sequelize, Sequelize.DataTypes);
 db.Business = Business(sequelize, Sequelize.DataTypes);
+db.Appointment = Appointment(sequelize, Sequelize.DataTypes);
 
 module.exports = db;
