@@ -9,7 +9,8 @@ import { fileURLToPath } from 'url';
 import authRoutes from './routes/authRoutes.js';
 import contactRoutes from './routes/contactSupportRoutes.js';
 import accountRoutes from './routes/accountRoutes.js';
-import adminRoutes from './routes/adminRoutes.js'
+import adminRoutes from './routes/adminRoutes.js';
+import appointmentRoutes from './routes/appointmentRoutes.js';
 import { parseBusinessData } from './helpers/businessHelper.js';
 
 const app = express();
@@ -50,6 +51,7 @@ app.use(authRoutes);
 app.use(contactRoutes);
 app.use(accountRoutes);
 app.use(adminRoutes);
+app.use(appointmentRoutes);
 
 // admin setup
 (async () => {
