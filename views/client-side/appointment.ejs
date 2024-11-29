@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="description" content="Professional hair salon offering services like coloring, styling, and haircuts for men and women.">
+      <meta name="keywords" content="hair salon, haircuts, hair styling, coloring, beauty services">
+      <title><%= business.name %> | Appointment</title>
+      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="/client-side/design.css">
+      <link rel="icon" type="image/svg+xml" href="<%= business.logos.svg %>">
+      <link rel="icon" type="image/png" href="<%= business.logos.png %>">
+    </head>
+
+
+    <body>
+      <header>
+        <nav class="navbar navbar-expand-lg navbar-light custom-navbar" id = "navbar">
+          <h3 class="salon-name"><%= business.name %></h3>
+           
+          <div class="ml-auto">
+            <a href="/" class="btn">Back</a>
+          </div>
+        </nav>
+      </header>
+  
+    
+    <section id = "appointment-form" class = "d-flex justify-content-center align-items-center">
+      <div id ="form-container">
+      <form class="form-horizontal">
+        <h1 class="text-center mb-4">Schedule an Appointment</h1>
+        <div class="form-group">
+          <label for="sel1">Select an Employee</label>
+          <select class="form-control" id="employee">
+            <option>No Preference</option>
+            <% business.staffMembers.forEach(staffMember => { %>
+              <option><%= staffMember.name %></option>
+            <% }) %>
+          </select>
+        </div>
+         
+        <div class="form-group">
+          <label for="sel1">Available Services</label>
+          <select class="form-control" id="service" required>
+            <% business.services.forEach(service => { %>
+              <option><%= service.name %></option>
+            <% }) %>
+          </select>
+        </div>
+
+         
+        <div class="form-group">
+          <label for="date">Date:</label>
+          <input type="date" class="form-control" id="date" name="date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="time">Time:</label>
+          <input type="time" class="form-control" id="time" name="time" required>
+        </div>
+
+        <button data-mdb-ripple-init type="button" class="btn btn-block mb-4" onclick="confirmAppointment()">Confirm</button>
+      </div>
+       
+      </form>
+    </section>
+
+    <script>
+      // Get today's date
+      const today = new Date();
+
+      // Format the date as YYYY-MM-DD
+      const yyyy = today.getFullYear();
+      let mm = today.getMonth() + 1; // Months are zero-indexed, so add 1
+      let dd = today.getDate();
+
+      // Add leading zero if month or day is less than 10
+      if (mm < 10) mm = '0' + mm;
+      if (dd < 10) dd = '0' + dd;
+
+      // Combine the formatted date string
+      const formattedDate = yyyy + '-' + mm + '-' + dd;
+
+      // Set the value of the input field with today's date
+      document.getElementById('date').value = formattedDate;
+      // Confirm appointment function
+      function confirmAppointment() {
+          // Capture form data
+          const employee = document.getElementById('employee').value;
+          const service = document.getElementById('service').value;
+          const date = document.getElementById('date').value;
+          const time = document.getElementById('time').value;
+
+          if (!employee || !service || !date || !time) {
+            alert("Please fill out all the fields.");
+            return; // Prevents sending empty data to the server
+          }
+
+          // Create the appointment data object
+          const appointmentData = {
+              employee,
+              service,
+              date,
+              time
+          };
+
+          // Send the data to the backend
+          fetch('/book', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(appointmentData),
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log("Server Response:", data);
+              alert('Appointment confirmed');
+              window.location.href = '/';
+          })
+          .catch(error => {
+              console.error('Error creating appointment:', error);
+              alert('Failed to create appointment. Please try again.');
+          });
+      }
+  </script>
+  
+  </body>
+</html>
