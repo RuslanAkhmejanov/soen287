@@ -37,25 +37,25 @@
     </header>
 
     <section id="account-info" class="mt-5">
-        <div class="container d-flex justify-content-center mt-5">
-            <div class="card">
-            
-                <div class="top-container">
-                    
-                    <img src="https://i.imgur.com/G1pXs7D.jpg" class="img-fluid profile-image" width="70">
-                    
-                    <div class="ml-3">
-                        <h5 class="name"><%= user.name %></h5>
-                        <p class="mail"><%= user.username %></p>
+        <div class="container d-flex justify-content-center">
+            <!-- Profile Card -->
+            <div class="card" style="width: 25rem;">
+                <div class="card-body text-center">
+                    <!-- Profile Image and Info -->
+                    <div class="d-flex align-items-center justify-content-center">
+                        <img src="/client-side/images/profilepic.jpg" class="img-fluid rounded-circle border-0" width="120" alt="Profile Image">
+                        <div class="ml-4">
+                            <h5 class="name mb-0"><%= user.name %></h5>
+                            <p class="mail text-muted"><%= user.username %></p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        
     </section>
 
     <!-- User Information Section -->
-    <section id="account-info" class="mt-5">
+    <section id="account-info" class="mt-1">
         <div class="container">
             <h2 class="text-center">Edit Account Information</h2>
             <form id="edit-account-form">
@@ -78,7 +78,7 @@
     </section>
 
     <!-- My Services Section with Cancel Option -->
-    <section id="my-services" class="mt-5">
+    <section id="my-services" class="mt-1">
         <div class="container">
             <h2 class="text-center">My Services</h2>
             <p class="text-center">View your booked services and cancel any appointments if necessary.</p>
@@ -89,34 +89,67 @@
                         <th scope="col">Service</th>
                         <th scope="col">Date</th>
                         <th scope="col">Time</th>
-                        <th scope="col">Price</th>
                         <th scope="col">Status</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Women's Haircut</td>
-                        <td>October 28, 2024</td>
-                        <td>2:00 PM</td>
-                        <td>$60</td>
-                        <td><span class="badge badge-success">Confirmed</span></td>
-                        <td><button class="btn btn-warning btn-sm" onclick="confirmCancel('Women's Haircut')">Cancel</button></td>
-                    </tr>
-                    <tr>
-                        <td>Hair Coloring</td>
-                        <td>November 5, 2024</td>
-                        <td>11:00 AM</td>
-                        <td>$100</td>
-                        <td><span class="badge badge-warning">Pending</span></td>
-                        <td><button class="btn btn-warning btn-sm" onclick="confirmCancel('Hair Coloring')">Cancel</button></td>
-                    </tr>
+                    <% if (appointments && appointments.length > 0) { %>
+                        <% appointments.forEach(appointment => { %>
+                            <tr>
+                                <td><%= appointment.service %></td>
+                                <td><%= appointment.date %></td>
+                                <td><%= appointment.time %></td>
+                                <% if (appointment.status === "Approved") { %>
+                                    <td><span class="badge badge-success"><%= appointment.status %></span></td>
+                                <% } else { %>
+                                    <td><span class="badge badge-warning"><%= appointment.status %></span></td> 
+                                <% } %>
+                                <td><button class="btn btn-warning btn-sm" onclick="cancelAppointment(<%= appointment.id %>)">Cancel</button></td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                <div class="alert alert-info my-3" role="alert">
+                                    <strong>No appointments at the moment.</strong>
+                                </div>
+                            </td>
+                        </tr>
+                    <% } %>
                 </tbody>
             </table>
         </div>
     </section>
 
     <script>
+        function cancelAppointment(appointmentId) {
+            // Make a DELETE request to your server
+            fetch(`/appointments/${appointmentId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Success - Remove the appointment row from the table or show success message
+                    alert('Appointment canceled successfully!');
+                    location.reload();
+                    // document.getElementById(`appointment-${appointmentId}`).remove();
+                } else {
+                    // Handle errors
+                    return response.json().then(err => {
+                        throw new Error(err.message);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error canceling appointment:', error);
+                alert('Failed to cancel appointment. Please try again.');
+            });
+
+        }
         document.getElementById('edit-account-form').addEventListener('submit', async (event) => {
             event.preventDefault();
             const name = document.getElementById('name').value;
@@ -164,7 +197,5 @@
             }
         });
         </script>
-
-    
 </body>
 </html>
